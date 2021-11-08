@@ -50,7 +50,7 @@ def main():
 #+name: TicTacToeGame-defn
 #+begin_src python
 class TicTacToeGame(object):
-    def __init__(self, num):
+    def __init__(self):
         pass
 
     def start(self):
@@ -70,6 +70,39 @@ class TicTacToeGame(object):
 So I need to first figure out how to store the state of the game. The game is a
 two-dimensional grid of characters, which I will encode as non-negative integers,
 one for each player and one encoding an empty tile.
+
+* Define the TicTacToeBoard class
+:PROPERTIES:
+:CREATED_TIME: [2021-11-07 Sun 22:32]
+:END:
+
+#+begin_src python
+class TicTacToeBoard(object, size):
+    def __init__(self, size):
+        self.size = size
+        self.board = [[0 for i in size] for j in size]
+
+    def display(self):
+        print('\n'.join(','.join(map(str, row))) for row in self.board)
+
+    def addMark(self, x, y, player):
+        board[x][y] = player
+#+end_src
+
+** Ideas on storing the board's state
+:PROPERTIES:
+:CREATED_TIME: [2021-11-07 Sun 22:41]
+:END:
+
+The only operations the board needs to do are display and add a mark. The board
+should be both a matrix of integers and an unordered set of sequences of
+adjacencies. I can use an array of numbers for the board and a set of numbers
+for the sequences of adjacencies.
+
+** TODO Prevent players from marking an already marked tile.
+:PROPERTIES:
+:CREATED_TIME: [2021-11-07 Sun 22:55]
+:END:
 
 * Imports
 :PROPERTIES:
