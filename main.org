@@ -1,0 +1,67 @@
+#+title: A Python Tic Tac Toe game
+
+* Outline
+:PROPERTIES:
+:CREATED_TIME: [2021-11-07 Sun 14:52]
+:END:
+
+#+BEGIN_SRC python :noweb yes :tangle main.py :exports none
+"""This is a Python Tic Tac Toe game"""
+
+# imports
+import sys
+<<tictactoe-main-imports>>
+
+# constants
+
+# exception classes
+
+# interface functions
+
+# classes
+<<TicTacToeGame-defn>>
+
+# internal functions & classes
+<<tictactoe-main>>
+
+if __name__ == '__main__':
+    status = main()
+    sys.exit(status)
+#+END_SRC
+
+* Main
+:PROPERTIES:
+:CREATED_TIME: [2021-11-07 Sun 15:54]
+:END:
+
+#+name: tictactoe-main
+#+begin_src python
+def main():
+    game = TicTacToeGame(num)
+    game.start()
+    return 0
+#+end_src
+
+* Define the ~NumberGame~ class
+:PROPERTIES:
+:CREATED_TIME: [2021-11-07 Sun 16:20]
+:END:
+
+#+name: TicTacToeGame-defn
+#+begin_src python
+class TicTacToeGame(object):
+    def __init__(self, num):
+        pass
+
+    def start(self):
+        pass
+#+end_src
+
+* Imports
+:PROPERTIES:
+:CREATED_TIME: [2021-11-07 Sun 15:59]
+:END:
+
+#+name: tictactoe-main-imports
+#+begin_src python
+#+end_src
