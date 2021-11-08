@@ -19,6 +19,8 @@ import sys
 # interface functions
 
 # classes
+<<TicTacToeBoard-defn>>
+
 <<TicTacToeGame-defn>>
 
 # internal functions & classes
@@ -37,7 +39,7 @@ if __name__ == '__main__':
 #+name: tictactoe-main
 #+begin_src python
 def main():
-    game = TicTacToeGame(num)
+    game = TicTacToeGame(3)
     game.start()
     return 0
 #+end_src
@@ -50,14 +52,19 @@ def main():
 #+name: TicTacToeGame-defn
 #+begin_src python
 class TicTacToeGame(object):
-    def __init__(self):
-        pass
+    def __init__(self, size):
+        self.board = TicTacToeBoard(size)
 
     def start(self):
-        pass
+        board = self.board
+        board.display()
+        while True:
+            move = [ int(x) for x in input('Make your move: ').split()]
+            board.addMark(move[0] - 1,move[1] - 1,1)
+            board.display()
 #+end_src
 
-** Personal planning
+** Brainstorming
 :PROPERTIES:
 :CREATED_TIME: [2021-11-07 Sun 22:18]
 :END:
@@ -71,25 +78,47 @@ So I need to first figure out how to store the state of the game. The game is a
 two-dimensional grid of characters, which I will encode as non-negative integers,
 one for each player and one encoding an empty tile.
 
-* Define the TicTacToeBoard class
+** [ ] Add a GUI for the game
+:PROPERTIES:
+:CREATED_TIME: [2021-11-08 Mon 00:04]
+:END:
+
+* Define the ~TicTacToeBoard~ class
 :PROPERTIES:
 :CREATED_TIME: [2021-11-07 Sun 22:32]
 :END:
 
+#+name: TicTacToeBoard-defn
 #+begin_src python
-class TicTacToeBoard(object, size):
+class TicTacToeBoard(object):
     def __init__(self, size):
         self.size = size
-        self.board = [[0 for i in size] for j in size]
+        self.board = [[0 for i in range(size)] for j in range(size)]
+        self.adjacencies = {}
 
     def display(self):
-        print('\n'.join(','.join(map(str, row))) for row in self.board)
+        board = '|\n|'.join(['|'.join(map(str, row)) for row in self.board])
+        board = '_' * (self.size * 2) + '_\n|' + board
+        board = board + '|\n‾' + '‾' * (self.size * 2)
+        print(board)
 
     def addMark(self, x, y, player):
-        board[x][y] = player
+        self.board[x][y] = player
+        for i, j in range(-1,1):
+            if 0 < x + i < self.size and 0 < y + j < self.size and self.board[x + i][x + j] == player:
+                self.adjacencies.add([player, {x + y*self.size, (x + i) + (y + j)*self.size}])
+
+    def winner(self):
+        if len(self.adjacencies) < self.size:
+            return 0
 #+end_src
 
-** Ideas on storing the board's state
+** Brainstorming
+:PROPERTIES:
+:CREATED_TIME: [2021-11-08 Mon 00:36]
+:END:
+
+*** Ideas on storing the board's state
 :PROPERTIES:
 :CREATED_TIME: [2021-11-07 Sun 22:41]
 :END:
@@ -98,11 +127,6 @@ The only operations the board needs to do are display and add a mark. The board
 should be both a matrix of integers and an unordered set of sequences of
 adjacencies. I can use an array of numbers for the board and a set of numbers
 for the sequences of adjacencies.
-
-** TODO Prevent players from marking an already marked tile.
-:PROPERTIES:
-:CREATED_TIME: [2021-11-07 Sun 22:55]
-:END:
 
 * Imports
 :PROPERTIES:
