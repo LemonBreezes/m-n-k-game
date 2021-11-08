@@ -42,7 +42,7 @@ def main():
     return 0
 #+end_src
 
-* Define the ~NumberGame~ class
+* Define the ~TicTacToeGame~ class
 :PROPERTIES:
 :CREATED_TIME: [2021-11-07 Sun 16:20]
 :END:
@@ -56,6 +56,20 @@ class TicTacToeGame(object):
     def start(self):
         pass
 #+end_src
+
+** Personal planning
+:PROPERTIES:
+:CREATED_TIME: [2021-11-07 Sun 22:18]
+:END:
+
+*** The first step: How do I encode the board's state?
+:PROPERTIES:
+:CREATED_TIME: [2021-11-07 Sun 22:23]
+:END:
+
+So I need to first figure out how to store the state of the game. The game is a
+two-dimensional grid of characters, which I will encode as non-negative integers,
+one for each player and one encoding an empty tile.
 
 * Imports
 :PROPERTIES:
