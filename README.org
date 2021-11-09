@@ -1,0 +1,14 @@
+
+
+* Python Tic Tac Toe game
+:PROPERTIES:
+:CREATED_TIME: [2021-11-07 Sun 21:44]
+:END:
+
+This is a Python implementation of Tic Tac Toe. To install and run this game
+manually, run:
+#+begin_src sh
+git clone https://github.com/LemonBreezes/python-tic-tac-toe-game
+cd python-tic-tac-toe-game
+python main.py
+#+end_src
