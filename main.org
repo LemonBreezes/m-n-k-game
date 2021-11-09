@@ -67,6 +67,7 @@ def main():
 board_size = 3
 num_players = 2
 winning_row_length = 3
+AI_difficulty = 1
 #+end_src
 
 * Define the ~TicTacToeGame~ class
@@ -82,7 +83,7 @@ class TicTacToeGame(object):
 
     def start(self):
         board = self._board
-        AI = TicTacToeAI(board=board, player_id=2, paradigm='random')
+        AI = TicTacToeAI(board=board, player_id=2, difficulty=AI_difficulty)
         board.display()
         while True:
             move = [ int(x) for x in input('Make your move: ').split()]
@@ -94,7 +95,7 @@ class TicTacToeGame(object):
             if (board.getWinner() == 1):
                 print('You win!')
                 break
-            sleep(2)
+            sleep(1)
             AI.makeNextMove()
             board.display()
             if (board.getWinner() > 1):
@@ -197,20 +198,19 @@ class TicTacToeBoard(object):
 #+name: TicTacToeAI-defn
 #+begin_src python
 class TicTacToeAI(object):
-    def __init__(self, board, player_id, paradigm):
+    def __init__(self, board, player_id, difficulty):
         self._board = board
-        self._paradigm = paradigm
+        self.._difficulty = difficulty
         self._id = player_id
         pass
 
     def makeNextMove(self):
-        if (self._paradigm == 'random'):
+        if (self._paradigm == 1):
             self.makeRandomMove()
-        elif (self._paradigm == 'intelligent'):
-            self.makeOptimalMove()
+        elif (self._paradigm == 2):
+            self.makeDefensiveMove()
 
     def makeRandomMove(self):
-        print(str(self._board.getAllAlignedPoints()))
         while (True):
             x = randrange(self._board.getSize())
             y = randrange(self._board.getSize())
@@ -218,7 +218,7 @@ class TicTacToeAI(object):
                 self._board.addMark(x+1,y+1,self._id)
                 break
 
-    def makeOptimalMove(self):
+    def makeDefensiveMove(self):
         pass
 #+end_src
 
