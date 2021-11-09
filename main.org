@@ -85,7 +85,7 @@ class TicTacToeGame(object):
 
     def start(self):
         board = self._board
-        AI = TicTacToeAI(board=board, player_id=2, difficulty=AI_difficulty, num_players=num_players)
+        AI = TicTacToeAI(board=board, player_id=2, difficulty=AI_difficulty)
         board.display()
         while True:
             move = [ int(x) for x in input('Make your move: ').split()]
@@ -209,18 +209,22 @@ class TicTacToeBoard(object):
 #+name: TicTacToeAI-defn
 #+begin_src python
 class TicTacToeAI(object):
-    def __init__(self, board, player_id, difficulty, num_players):
+    def __init__(self, board, player_id, difficulty):
         self._board = board
         self._difficulty = difficulty
         self._id = player_id
-        self._num_players = num_players
         pass
 
+    def _canOpponentWin(self, table):
+        return False
+
     def makeNextMove(self):
-        if (self._difficulty == 1):
-            self.makeRandomMove()
-        elif (self._difficulty == 2):
+        table = self._board.getLinesTable()
+        if (self._difficulty >= 2
+            and self._canOpponentWin()):
             self.makeDefensiveMove()
+        elif (self._difficulty >= 1):
+            self.makeRandomMove()
 
     def makeRandomMove(self):
         while (True):
