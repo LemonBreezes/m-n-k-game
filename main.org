@@ -62,8 +62,9 @@ class TicTacToeGame(object):
             move = [ int(x) for x in input('Make your move: ').split()]
             board.addMark(x=move[0],y=move[1],player=1)
             board.display()
-            if board.getWinner():
+            if (board.getWinner() == 1):
                 print('You win!')
+                break
 #+end_src
 
 ** Brainstorming
@@ -109,8 +110,7 @@ class TicTacToeBoard(object):
         print(board)
 
     def _hashCoordinate(self, x, y):
-        if 0 <= x < self._size and 0 <= y < self._size:
-            return x + y*self._size
+        return x + y*self._size
 
     def addMark(self, x, y, player):
         x = x - 1
@@ -123,22 +123,23 @@ class TicTacToeBoard(object):
             p = self._hashCoordinate(x, y)
             q = self._hashCoordinate(x+i,y+j)
             r = self._hashCoordinate(x-i,y-j)
-            print('player,x,y,i,j,p,q,r are: ' + str(player) + ' '
-                  + str(x) + ' ' + str(y) + ' ' + str(i) + ' ' + str(j) + ' '
-                  + str(p) + ' ' + str(q) + ' ' + str(r))
-            if (q and board[x+i][y+j] == player):
-                if (r  and self._adjacency_matrices[player - 1][r, p] == 1):
-                    self._adjacency_matrices[player - 1][q,p] = 1
+            # print('player,x,y,i,j,p,q,r are: ' + str(player) + ' '
+            #       + str(x) + ' ' + str(y) + ' ' + str(i) + ' ' + str(j) + ' '
+            #       + str(p) + ' ' + str(q) + ' ' + str(r))
+            if (0 <= x+i < self._size and 0 <= y+j < self._size and board[x+i][y+j] == player):
+                if (0 <= x-i < self._size and 0 <= y-j < self._size
+                    and board[x-i][y-j] == player):
+                    self._adjacency_matrices[player-1][q,p] = 1
                 else:
-                    self._adjacency_matrices[player - 1][p,q] = 1
+                    self._adjacency_matrices[player-1][p,q] = 1
 
     def getWinner(self):
         for player in range(self._num_players):
-            m = self._adjacency_matrices[player]**self._winning_row_length
-            print(str(m))
+            m = self._adjacency_matrices[player]**(self._winning_row_length - 1)
+            # print(m)
             for i, j in product(range(self._size**2), range(self._size**2)):
-                if (m[i,j] >= self._winning_row_length):
-                    return player
+                if (m[i,j] == 1):
+                    return player + 1
 
     def clear(self):
         self._board = [[0 for i in range(self.size)] for j in range(self.size)]
@@ -189,12 +190,22 @@ class TestTicTacToeBoard(unittest.TestCase):
         board = TicTacToeBoard(3)
         board.addMark(x=1,y=1,player=1)
         self.assertEqual(board._board, [[1, 0, 0], [0, 0, 0], [0, 0, 0]])
-        assert array_equal(board._adjacency_matrices, [matrix([[0 for p in range(9)] for q in range(9)]) for player in range(1)])
-        board.addMark(x=1,y=2,player=1)
-        self.assertEqual(board._board, [[1, 0, 0], [0, 0, 0], [0, 0, 0]])
         assert array_equal(board._adjacency_matrices,
-                           [matrix([[1 if p == _hashCoordinate(1,1) and q == _hashCoordinate(1,2)
-                                     for p in range(9)] for q in range(9)]) for player in range(1)])
+                           [matrix([[0 for p in range(9)]
+                                    for q in range(9)]) for player in range(1)])
+        board.addMark(x=1,y=2,player=1)
+        self.assertEqual(board._board, [[1, 1, 0], [0, 0, 0], [0, 0, 0]])
+        assert array_equal(
+            board._adjacency_matrices,
+            [matrix([[0, 0, 0, 1, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0]])])
         
     def test_getWinner(self):
         pass
