@@ -7,9 +7,9 @@ from numpy import matrix
 from math import floor
 
 # constants
-board_size = 4
+board_size = 3
 num_players = 1
-winning_row_length = 4
+winning_row_length = 3
 
 # exception classes
 
