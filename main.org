@@ -79,7 +79,9 @@ AI_difficulty = 1
 #+begin_src python
 class TicTacToeGame(object):
     def __init__(self, size, num_players, winning_row_length):
-        self._board = TicTacToeBoard(size, num_players, winning_row_length)
+        self._board = TicTacToeBoard(size=size,
+                                     num_players=num_players,
+                                     winning_row_length=winning_row_length)
 
     def start(self):
         board = self._board
@@ -145,22 +147,24 @@ class TicTacToeBoard(object):
         return not (self._isPointInBoard(x,y) and self._board[x][y] == 0)
 
     def getWinner(self):
-        for lines in self.getSetOfLines():
-            if len(lines) >= self._winning_row_length:
-                p = next(iter(lines))
-                player = self._board[p[0]][p[1]]
-                return player
+        lines_table = self.getLinesTable()
+        for player in range(1,self._num_players + 1):
+            for lines in lines_table[player]:
+                if len(lines) >= self._winning_row_length:
+                    p = next(iter(lines))
+                    player = self._board[p[0]][p[1]]
+                    return player
         return 0
     
-    def getSetOfLines(self):
-        setOfLines = []
-        for player in range(1,self._num_players + 1):
+    def getLinesTable(self):
+        lines_table = [set() for player in range(self._num_players + 1)]
+        for player in range(self._num_players + 1):
             for x, y in product(range(self._size), range(self._size)):
                 p = (x,y)
                 q = self._getSecondPoint(x,y,player)
                 # print('The second point is: ' + str(q))
-                if q: setOfLines.insert(0, self._getAllAlignedPoints(p, q, player))
-        return setOfLines
+                if q: lines_table[player].add(self._getAlignedPoints(p, q, player))
+        return lines_table
         
 
     def _getSecondPoint(self, x, y, player):
@@ -172,7 +176,7 @@ class TicTacToeBoard(object):
             if (self._isPointInBoard(x+i,y+j) and self._board[x+i][y+j] == player):
                 return (x+i,y+j)
 
-    def _getAllAlignedPoints(self, p, q, player):
+    def _getAlignedPoints(self, p, q, player):
         aligned_points = {p, q}
         curr = q 
         while (self._isPointInBoard(curr[0] + q[0] - p[0],
@@ -187,7 +191,7 @@ class TicTacToeBoard(object):
             aligned_points.add((curr[0] - q[0] + p[0], curr[1] - q[1] + p[1]))
             curr = (curr[0] - q[0] + p[0], curr[1] - q[1] + p[1])
         # print('The aligned points are: ' + str(aligned_points))
-        return aligned_points
+        return frozenset(aligned_points)
             
 
     def _isPointInBoard(self, x, y):
@@ -225,9 +229,6 @@ class TicTacToeAI(object):
             if (self._board.getBoard()[x][y] == 0):
                 self._board.addMark(x+1,y+1,self._id)
                 break
-
-    def makeDefensiveMove(self):
-        pass
 #+end_src
 
 * Create ~unittest~ tests
