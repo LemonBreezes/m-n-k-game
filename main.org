@@ -50,6 +50,10 @@ def main():
 :CREATED_TIME: [2021-11-08 Mon 22:58]
 :END:
 
+** [ ] Add an AI player
+:PROPERTIES:
+:CREATED_TIME: [2021-11-08 Mon 23:38]
+:END:
 
 * Constants
 :PROPERTIES:
