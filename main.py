@@ -4,11 +4,12 @@
 import sys
 from itertools import product
 from numpy import matrix
+from math import floor
 
 # constants
-board_size = 3
+board_size = 4
 num_players = 1
-winning_row_length = 3
+winning_row_length = 4
 
 # exception classes
 
@@ -21,9 +22,6 @@ class TicTacToeBoard(object):
         self._num_players = num_players
         self._winning_row_length = winning_row_length
         self._board = [[0 for i in range(size)] for j in range(size)]
-        self._adjacency_matrices = [matrix([[0 for p in range(size**2)]
-                                            for q in range(size**2)])
-                                    for player in range(self._num_players)]
 
     def display(self):
         board = '|\n|'.join(['|'.join(map(str, row)) for row in self._board])
@@ -31,45 +29,56 @@ class TicTacToeBoard(object):
         board = board + '|\n‾' + '‾' * (self._size * 2)
         print(board)
 
-    def _hashCoordinate(self, x, y):
-        return x + y*self._size
-
     def addMark(self, x, y, player):
         x = x - 1
         y = y - 1
         board = self._board
         board[x][y] = player
+
+    def getWinner(self):
+        num_aligned = 1
+        for player in range(1,self._num_players + 1):
+            for x, y in product(range(self._size), range(self._size)):
+                p = (x,y)
+                q = self._getSecondPoint(x,y,player)
+                # print('The second point is: ' + str(q))
+                if (q and len(self._getAllAlignedPoints(p, q, player))
+                    >= self._winning_row_length):
+                    return player
+        return 0
+
+    def _getSecondPoint(self, x, y, player):
+        if self._board[x][y] != player:
+            return False
         for i, j in product(range(-1,2),range(-1,2)):
             if (i == 0 and j == 0):
                 continue
-            p = self._hashCoordinate(x, y)
-            q = self._hashCoordinate(x+i,y+j)
-            r = self._hashCoordinate(x-i,y-j)
-            # print('player,x,y,i,j,p,q,r are: ' + str(player) + ' '
-            #       + str(x) + ' ' + str(y) + ' ' + str(i) + ' ' + str(j) + ' '
-            #       + str(p) + ' ' + str(q) + ' ' + str(r))
-            if (0 <= x+i < self._size and 0 <= y+j < self._size and board[x+i][y+j] == player):
-                if (0 <= x-i < self._size and 0 <= y-j < self._size
-                    and board[x-i][y-j] == player):
-                    self._adjacency_matrices[player-1][q,p] = 1
-                else:
-                    self._adjacency_matrices[player-1][p,q] = 1
+            if (self._isPointInBoard(x+i,y+j) and self._board[x+i][y+j] == player):
+                return (x+i,y+j)
 
-    def getWinner(self):
-        for player in range(self._num_players):
-            m = self._adjacency_matrices[player]**(self._winning_row_length - 1)
-            # print(m)
-            for i, j in product(range(self._size**2), range(self._size**2)):
-                if (m[i,j] == 1 and abs(j - i) in {self._winning_row_length**2 - 1,
-                                           self._winning_row_length - 1,
-                                           self._winning_row_length**2 - self._winning_row_length}):
-                    return player + 1
+    def _getAllAlignedPoints(self, p, q, player):
+        aligned_points = {p, q}
+        curr = q 
+        while (self._isPointInBoard(curr[0] + q[0] - p[0],
+                                    curr[1] + q[1] - p[1])
+               and self._board[curr[0] + q[0] - p[0]][curr[1] + q[1] - p[1]] == player):
+            aligned_points.add((curr[0] + q[0] - p[0], curr[1] + q[1] - p[1]))
+            curr = (curr[0] + q[0] - p[0], curr[1] + q[1] - p[1])
+        curr = p
+        while (self._isPointInBoard(curr[0] - q[0] + p[0],
+                                    curr[1] - q[1] + p[1])
+               and self._board[curr[0] - q[0] + p[0]][curr[1] - q[1] + p[1]] == player):
+            aligned_points.add((curr[0] - q[0] + p[0], curr[1] - q[1] + p[1]))
+            curr = (curr[0] - q[0] + p[0], curr[1] - q[1] + p[1])
+        # print('The aligned points are: ' + str(aligned_points))
+        return aligned_points
+            
+
+    def _isPointInBoard(self, x, y):
+        return (0 <= x < self._size and 0 <= y < self._size)
 
     def clear(self):
         self._board = [[0 for i in range(self.size)] for j in range(self.size)]
-        self._adjacency_matrices = [matrix([[0 for p in range(self.size**2)]
-                                            for q in range(self.size**2)])
-                                    for player in range(self._num_players)]
 
 class TicTacToeGame(object):
     def __init__(self, size, num_players, winning_row_length):
