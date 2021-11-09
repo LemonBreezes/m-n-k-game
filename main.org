@@ -153,25 +153,22 @@ class TicTacToeBoard(object):
         return not (self._isPointInBoard(x,y) and self._board[x][y] == 0)
 
     def getWinner(self):
-        lines_table = self.getLinesTable()
-        for player in range(1,self._num_players + 1):
-            for lines in lines_table[player]:
-                if len(lines) >= self._winning_row_length:
-                    p = next(iter(lines))
-                    player = self._board[p[0]][p[1]]
-                    return player
+        for lines in self.getSetOfLines():
+            if len(lines) >= self._winning_row_length:
+                p = next(iter(lines))
+                player = self._board[p[0]][p[1]]
+                return player
         return 0
     
-    def getLinesTable(self):
-        lines_table = [set() for player in range(self._num_players + 1)]
-        for player in range(self._num_players + 1):
+    def getSetOfLines(self):
+        setOfLines = []
+        for player in range(1,self._num_players + 1):
             for x, y in product(range(self._size), range(self._size)):
                 p = (x,y)
                 q = self._getSecondPoint(x,y,player)
                 # print('The second point is: ' + str(q))
-                if q: lines_table[player].add(self._getAlignedPoints(p, q, player))
-        return lines_table
-        
+                if q: setOfLines.insert(0, self._getAllAlignedPoints(p, q, player))
+        return setOfLines
 
     def _getSecondPoint(self, x, y, player):
         if self._board[x][y] != player:
