@@ -119,6 +119,12 @@ class TicTacToeBoard(object):
         self._winning_row_length = winning_row_length
         self._board = [[0 for i in range(size)] for j in range(size)]
 
+    def __init__(self, board):
+        self._size = board.getSize()
+        self._num_players = board.getNumPlayers()
+        self._winning_row_length = board.getWinningRowLength()
+        self._board = board.getBoard()
+
     def display(self):
         board = '|\n|'.join(['|'.join(map(str, row)) for row in self._board])
         board = '_' * (self._size * 2) + '_\n|' + board
