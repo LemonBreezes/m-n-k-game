@@ -90,25 +90,6 @@ class TicTacToeGame(object):
                 break
 #+end_src
 
-** Brainstorming
-:PROPERTIES:
-:CREATED_TIME: [2021-11-07 Sun 22:18]
-:END:
-
-*** The first step: How do I encode the board's state?
-:PROPERTIES:
-:CREATED_TIME: [2021-11-07 Sun 22:23]
-:END:
-
-So I need to first figure out how to store the state of the game. The game is a
-two-dimensional grid of characters, which I will encode as non-negative integers,
-one for each player and one encoding an empty tile.
-
-** [ ] Add a GUI for the game
-:PROPERTIES:
-:CREATED_TIME: [2021-11-08 Mon 00:04]
-:END:
-
 * Define the ~TicTacToeBoard~ class
 :PROPERTIES:
 :CREATED_TIME: [2021-11-07 Sun 22:32]
@@ -180,31 +161,6 @@ class TicTacToeBoard(object):
     def clear(self):
         self._board = [[0 for i in range(self.size)] for j in range(self.size)]
 #+end_src
-
-** Brainstorming
-:PROPERTIES:
-:CREATED_TIME: [2021-11-08 Mon 00:36]
-:END:
-
-*** Ideas on storing the board's state
-:PROPERTIES:
-:CREATED_TIME: [2021-11-07 Sun 22:41]
-:END:
-
-The only operations the board needs to do are display and add a mark. The board
-should be both a matrix of integers and an unordered set of sequences of
-adjacencies. I can use an array of numbers for the board and a set of numbers
-for the sequences of adjacencies.
-
-*** How do I compute the winner?
-:PROPERTIES:
-:CREATED_TIME: [2021-11-08 Mon 09:10]
-:END:
-
-So I just realized a problem with my adjacencies. For a sequence of adjacencies
-to realize a winner, they have to form a line, rather than a corner. For this to
-happen in a triple means that two adjacencies intersect on a point and the other
-two points are not adjacent. Basically, I need to determine if a path is a cycle.
 
 * Create ~unittest~ tests
 :PROPERTIES:
