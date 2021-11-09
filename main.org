@@ -97,11 +97,17 @@ class TicTacToeGame(object):
             if (board.getWinner() == 1):
                 print('You win!')
                 break
+            if (board.isDraw()):
+                print('Draw!')
+                break
             sleep(1)
             AI.makeNextMove()
             board.display()
             if (board.getWinner() > 1):
                 print('You lost!')
+                break
+            if (board.isDraw()):
+                print('Draw!')
                 break
 #+end_src
 
@@ -113,23 +119,29 @@ class TicTacToeGame(object):
 #+name: TicTacToeBoard-defn
 #+begin_src python
 class TicTacToeBoard(object):
-    def __init__(self, size, num_players, winning_row_length):
+    def __init__(self, size, num_players, winning_row_length, board=None, last_player=0):
         self._size = size
         self._num_players = num_players
         self._winning_row_length = winning_row_length
-        self._board = [[0 for i in range(size)] for j in range(size)]
+        self._last_player = last_player
+        self._board = [[0 for i in range(size)] for j in range(size)] if board is None else board
 
-    def __init__(self, board):
-        self._size = board.getSize()
-        self._num_players = board.getNumPlayers()
-        self._winning_row_length = board.getWinningRowLength()
-        self._board = board.getBoard()
+    @classmethod
+    def from_board(cls, class_instance):
+        board = deepcopy(class_instance._board)
+        size = class_instance._size
+        num_players = class_instance._num_players
+        winning_row_length = class_instance._winning_row_length
+        return cls(size=size, num_players=num_players, winning_row_length=winning_row_length, board=board)
 
     def display(self):
         board = '|\n|'.join(['|'.join(map(str, row)) for row in self._board])
         board = '_' * (self._size * 2) + '_\n|' + board
         board = board + '|\n‾' + '‾' * (self._size * 2)
         print(board)
+
+    def getLastPlayer(self):
+        return self._last_player
         
     def getBoard(self):
         return self._board
@@ -159,6 +171,14 @@ class TicTacToeBoard(object):
                 player = self._board[p[0]][p[1]]
                 return player
         return 0
+
+    def isDraw(self):
+        if self.getWinner():
+            return False
+        for x, y in product(range(self._size), range(self._size)):
+            if self._board[x][y] == 0:
+                return False
+        return True
     
     def getSetOfLines(self):
         setOfLines = []
