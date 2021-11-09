@@ -45,6 +45,12 @@ def main():
     return 0
 #+end_src
 
+** [ ] Add an argument parser for changing ~board_size~, etc.
+:PROPERTIES:
+:CREATED_TIME: [2021-11-08 Mon 22:58]
+:END:
+
+
 * Constants
 :PROPERTIES:
 :CREATED_TIME: [2021-11-08 Mon 19:30]
