@@ -28,6 +28,9 @@ class TicTacToeBoard(object):
         board = '_' * (self._size * 2) + '_\n|' + board
         board = board + '|\n‾' + '‾' * (self._size * 2)
         print(board)
+        
+    def getBoard(self):
+        return self._board
 
     def addMark(self, x, y, player):
         x = x - 1

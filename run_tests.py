@@ -7,11 +7,11 @@ class TestTicTacToeBoard(unittest.TestCase):
     def test_addMark(self):
         board = TicTacToeBoard(size=3, num_players=1, winning_row_length=3)
         board.addMark(x=1,y=1,player=1)
-        self.assertEqual(board._board, [[1, 0, 0], [0, 0, 0], [0, 0, 0]])
+        self.assertEqual(board.getBoard(), [[1, 0, 0], [0, 0, 0], [0, 0, 0]])
         board.addMark(x=1,y=2,player=1)
-        self.assertEqual(board._board, [[1, 1, 0], [0, 0, 0], [0, 0, 0]])
+        self.assertEqual(board.getBoard(), [[1, 1, 0], [0, 0, 0], [0, 0, 0]])
         board.addMark(x=1,y=3,player=1)
-        self.assertEqual(board._board, [[1, 1, 1], [0, 0, 0], [0, 0, 0]])
+        self.assertEqual(board.getBoard(), [[1, 1, 1], [0, 0, 0], [0, 0, 0]])
         
     def test_getWinner(self):
         board = TicTacToeBoard(size=3, num_players=1, winning_row_length=3)
