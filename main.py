@@ -26,6 +26,12 @@ class TicTacToeBoard(object):
         self._winning_row_length = winning_row_length
         self._board = [[0 for i in range(size)] for j in range(size)]
 
+    def __init__(self, board):
+        self._size = board.getSize()
+        self._num_players = board.getNumPlayers()
+        self._winning_row_length = board.getWinningRowLength()
+        self._board = board.getBoard()
+
     def display(self):
         board = '|\n|'.join(['|'.join(map(str, row)) for row in self._board])
         board = '_' * (self._size * 2) + '_\n|' + board
@@ -54,25 +60,22 @@ class TicTacToeBoard(object):
         return not (self._isPointInBoard(x,y) and self._board[x][y] == 0)
 
     def getWinner(self):
-        lines_table = self.getLinesTable()
-        for player in range(1,self._num_players + 1):
-            for lines in lines_table[player]:
-                if len(lines) >= self._winning_row_length:
-                    p = next(iter(lines))
-                    player = self._board[p[0]][p[1]]
-                    return player
+        for lines in self.getSetOfLines():
+            if len(lines) >= self._winning_row_length:
+                p = next(iter(lines))
+                player = self._board[p[0]][p[1]]
+                return player
         return 0
     
-    def getLinesTable(self):
-        lines_table = [set() for player in range(self._num_players + 1)]
-        for player in range(self._num_players + 1):
+    def getSetOfLines(self):
+        setOfLines = []
+        for player in range(1,self._num_players + 1):
             for x, y in product(range(self._size), range(self._size)):
                 p = (x,y)
                 q = self._getSecondPoint(x,y,player)
                 # print('The second point is: ' + str(q))
-                if q: lines_table[player].add(self._getAlignedPoints(p, q, player))
-        return lines_table
-        
+                if q: setOfLines.insert(0, self._getAllAlignedPoints(p, q, player))
+        return setOfLines
 
     def _getSecondPoint(self, x, y, player):
         if self._board[x][y] != player:
@@ -114,15 +117,9 @@ class TicTacToeAI(object):
         self._id = player_id
         pass
 
-    def _canOpponentWin(self, table):
-        return False
-
     def makeNextMove(self):
         table = self._board.getLinesTable()
-        if (self._difficulty >= 2
-            and self._canOpponentWin()):
-            self.makeDefensiveMove()
-        elif (self._difficulty >= 1):
+        if (self._difficulty == 1):
             self.makeRandomMove()
 
     def makeRandomMove(self):
@@ -132,6 +129,9 @@ class TicTacToeAI(object):
             if (self._board.getBoard()[x][y] == 0):
                 self._board.addMark(x+1,y+1,self._id)
                 break
+
+    def _getPossibleNextStates(self, board):
+        pass
 
 class TicTacToeGame(object):
     def __init__(self, size, num_players, winning_row_length):
