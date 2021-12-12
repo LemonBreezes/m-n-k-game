@@ -2,19 +2,19 @@ from itertools import product
 from copy import deepcopy
 
 class Board():
-    def __init__(self, size, board=None, lines=None, num_blanks=None):
+    def __init__(self, size, num_players=None, board=None, lines=None, num_blanks=None, scores=None):
         self.size = size
         self.board = [[0 for _ in range(size)] for _ in range(size)] if board is None else board
-        self.lines = [set() for p in range(size**2)] if lines is None else lines
+        self.scores = [0 for _ in range(num_players + 1)] if num_players else scores
         self.num_blanks = size**2 if num_blanks is None else num_blanks
 
     @classmethod
     def from_board(cls, class_instance):
         board = deepcopy(class_instance.board)
         size = class_instance.size
-        lines = deepcopy(class_instance.lines)
+        scores = deepcopy(class_instance.scores)
         num_blanks = class_instance.num_blanks
-        return cls(size=size, board=board, lines=lines, num_blanks=num_blanks)
+        return cls(size=size, board=board, scores=scores, num_blanks=num_blanks)
 
     def hash(self, x, y):
         return x*self.size + y
@@ -29,16 +29,16 @@ class Board():
             if i == 0 and j == 0:
                 continue
             if self.is_point_marked_by_player(x+i, y+j, player_id):
-                aligned_points = {self.hash(x, y), self.hash(x+i, y+j)}
+                curr_score = 2
                 c, d = x+i, y+j
                 while self.is_point_marked_by_player(c + i, d + j, player_id):
-                    aligned_points.add((c + i, d + j))
+                    curr_score += 1
                     c, d = c + i, d + j
                 c, d = x, y
                 while self.is_point_marked_by_player(c - i, d - j, player_id):
-                    aligned_points.add((c - i, d - j))
+                    curr_score += 1
                     c, d = c - i, d - j
-                self.lines[self.hash(x,y)] = self.lines[self.hash(x+i,y+j)] = aligned_points
+                self.scores[player_id] = max(self.scores[player_id], curr_score)
 
     def is_point_marked_by_player(self, x, y, player_id):
         return 0 <= x < self.size and 0 <= y < self.size and self.board[x][y] == player_id
@@ -48,10 +48,9 @@ class Board():
         return 0 <= x < self.size and 0 <= y <= self.size and self.board[x][y] != 0
 
     def get_player_with_score(self, score):
-        for p, lines in enumerate(self.lines):
-            if len(lines) >= score:
-                x, y = self.unhash(p)
-                return self.board[x][y]
+        for player_id, player_score in enumerate(self.scores):
+            if player_score >= score:
+                return player_id
         if self.num_blanks == 0:
             return -1
         return 0
