@@ -6,8 +6,8 @@ from game import TicTacToe
 
 # constants
 board_size = 3
-num_players = 0
-num_ai_players = 2
+num_players = 1
+num_ai_players = 1
 winning_row_length = 3
 ai_difficulty = 2
 

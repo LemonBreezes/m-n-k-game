@@ -59,8 +59,8 @@ class Board():
             return -1
         return 0
 
-    def display(self):
+    def __str__(self):
         board = '|\n|'.join(['|'.join(map(str, row)) for row in self.board])
         board = '_' * (self.size * 2) + '_\n|' + board
         board = board + '|\n‾' + '‾' * (self.size * 2)
-        print(board)
+        return board
