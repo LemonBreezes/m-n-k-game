@@ -28,27 +28,24 @@ class Board():
         for i, j in product(range(-1,2), range(-1,2)):
             if i == 0 and j == 0:
                 continue
-            if (self.is_point_valid(x+i, y+j) and self.board[x+i][y+j] == player_id):
-                a, b = x+i, y+j
-                aligned_points = {self.hash(x, y), self.hash(a, b)}
-                c, d = a, b
-                while (self.is_point_valid(c + a - x, d + b - y)
-                        and self.board[c + a - x][d + b - y] == player_id):
-                    aligned_points.add((c + a - x, d + b - y))
-                    c, d = c + a - x, d + b - y
+            if self.is_point_marked_by_player(x+i, y+j, player_id):
+                aligned_points = {self.hash(x, y), self.hash(x+i, y+j)}
+                c, d = x+i, y+j
+                while self.is_point_marked_by_player(c + i, d + j, player_id):
+                    aligned_points.add((c + i, d + j))
+                    c, d = c + i, d + j
                 c, d = x, y
-                while (self.is_point_valid(c - a + x, d - b + y)
-                        and self.board[c - a + x][d - b + y] == player_id):
-                    aligned_points.add((c - a + x, d - b + y))
-                    c, d = c - a + x, d - b + y
+                while self.is_point_marked_by_player(c - i, d - j, player_id):
+                    aligned_points.add((c - i, d - j))
+                    c, d = c - i, d - j
                 self.lines[self.hash(x,y)] = self.lines[self.hash(x+i,y+j)] = aligned_points
 
-    def is_point_valid(self, x, y):
-        return 0 <= x < self.size if 0 <= y < self.size else False
+    def is_point_marked_by_player(self, x, y, player_id):
+        return 0 <= x < self.size and 0 <= y < self.size and self.board[x][y] == player_id
 
     def is_point_marked(self, move):
         x, y = move
-        return self.is_point_valid(x,y) and self.board[x][y] != 0
+        return 0 <= x < self.size and 0 <= y <= self.size and self.board[x][y] != 0
 
     def get_player_with_score(self, score):
         for p, lines in enumerate(self.lines):
