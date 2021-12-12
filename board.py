@@ -47,13 +47,11 @@ class Board():
         x, y = move
         return 0 <= x < self.size and 0 <= y <= self.size and self.board[x][y] != 0
 
-    def get_player_with_score(self, score):
-        for player_id, player_score in enumerate(self.scores):
-            if player_score >= score:
-                return player_id
-        if self.num_blanks == 0:
-            return -1
-        return 0
+    def get_player_score(self, player_id):
+        return self.scores[player_id]
+
+    def is_game_over(self):
+        return self.num_blanks == 0
 
     def __str__(self):
         board = '|\n|'.join(['|'.join(map(str, row)) for row in self.board])

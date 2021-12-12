@@ -42,12 +42,11 @@ class AI():
         return board.unhash(max(range(len(scores)), key=scores.__getitem__))
 
     def score_state(self, board, prev_player, depth = 0):
-        winner = board.get_player_with_score(self.winning_row_length)
-        next_player = max((prev_player + 1) % (self.num_players + 1),1)
-        if winner == -1:
+        if board.get_player_score(prev_player) >= self.winning_row_length:
+            return depth + 1 if prev_player == self.player_id else -(depth + 1)
+        elif board.is_game_over():
             return 0
-        elif winner > 0:
-            return depth + 1 if winner == self.player_id else -(depth + 1)
+        next_player = max((prev_player + 1) % (self.num_players + 1),1)
         possible_next_states = self.get_possible_next_states(board, next_player)
         if prev_player != self.player_id:
             return max([self.score_state(state, next_player, depth + 1)
