@@ -2,8 +2,9 @@ import sys
 import unittest
 
 from board import Board
+from game import TicTacToe
 
-class TestTicTacToeBoard(unittest.TestCase):
+class BoardTests(unittest.TestCase):
     def test_add_mark(self):
         board = Board(size=3)
         board.add_mark(0,0,player_id=1)
@@ -56,6 +57,19 @@ class TestTicTacToeBoard(unittest.TestCase):
         #                 [0, 1, 1]]
         board.add_mark(1,1,1)
         self.assertEqual(board.get_player_with_score(3), 1)
+
+
+class AITests(unittest.TestCase):
+    def test_minimax(self):
+        for _ in range(5):
+            game = TicTacToe(size=3,
+                            num_players=0,
+                            num_ai_players=2,
+                            ai_difficulty=2,
+                            winning_row_length=3,
+                            running_tests = True)
+            game.start()
+            self.assertEqual(game.get_winner(), -1)
 
 def main():
     suite = unittest.TestSuite()
