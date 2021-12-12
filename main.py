@@ -2,7 +2,7 @@
 
 # imports
 import sys
-from game import GeneralizedTicTacToe
+from game import TicTacToe
 
 # constants
 board_size = 4
@@ -13,11 +13,11 @@ ai_difficulty = 2
 
 # internal functions & classes
 def main():
-    game = GeneralizedTicTacToe(size=board_size,
-                                num_players=num_players,
-                                num_ai_players=num_ai_players,
-                                ai_difficulty=ai_difficulty,
-                                winning_row_length=winning_row_length)
+    game = TicTacToe(size=board_size,
+                     num_players=num_players,
+                     num_ai_players=num_ai_players,
+                     ai_difficulty=ai_difficulty,
+                     winning_row_length=winning_row_length)
     game.start()
     return 0
 

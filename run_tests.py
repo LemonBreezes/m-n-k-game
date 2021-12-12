@@ -1,38 +1,61 @@
 import sys
 import unittest
-from main import *
-from numpy import array_equal
+
+from board import Board
 
 class TestTicTacToeBoard(unittest.TestCase):
-    def test_addMark(self):
-        board = TicTacToeBoard(size=3, num_players=1, winning_row_length=3)
-        board.addMark(x=1,y=1,player=1)
-        self.assertEqual(board.getBoard(), [[1, 0, 0], [0, 0, 0], [0, 0, 0]])
-        board.addMark(x=1,y=2,player=1)
-        self.assertEqual(board.getBoard(), [[1, 1, 0], [0, 0, 0], [0, 0, 0]])
-        board.addMark(x=1,y=3,player=1)
-        self.assertEqual(board.getBoard(), [[1, 1, 1], [0, 0, 0], [0, 0, 0]])
+    def test_add_mark(self):
+        board = Board(size=3)
+        board.add_mark(0,0,player_id=1)
+        self.assertEqual(board.board, [[1, 0, 0], [0, 0, 0], [0, 0, 0]])
+        board.add_mark(0,1,player_id=1)
+        self.assertEqual(board.board, [[1, 1, 0], [0, 0, 0], [0, 0, 0]])
+        board.add_mark(0,2,player_id=1)
+        self.assertEqual(board.board, [[1, 1, 1], [0, 0, 0], [0, 0, 0]])
         
-    def test_getWinner(self):
-        board = TicTacToeBoard(size=3, num_players=1, winning_row_length=3)
-        board._board = [[1, 1, 1],
-                        [0, 0, 0],
-                        [0, 0, 0]]
-        self.assertEqual(board.getWinner(), 1)
-        board._board = [[1, 0, 1],
-                        [0, 1, 0],
-                        [0, 0, 0]]
-        self.assertEqual(board.getWinner(), 0)
-        board._board = [[1, 1, 0],
-                        [1, 0, 1],
-                        [0, 1, 1]]
-        self.assertEqual(board.getWinner(), 0)
-        board._board = [[1, 1, 0],
-                        [1, 1, 1],
-                        [0, 1, 1]]
-        self.assertEqual(board.getWinner(), 1)
-
-
+    def test_get_player_with_score(self):
+        board = Board(size=3)
+        # board.board = [[1, 1, 1],
+        #                [0, 0, 0],
+        #                [0, 0, 0]]
+        board.add_mark(0,0,1)
+        board.add_mark(1,0,1)
+        board.add_mark(2,0,1)
+        self.assertEqual(board.get_player_with_score(3), 1)
+        board = Board(size=3)
+        # board.board = [[1, 0, 1],
+        #                [0, 1, 0],
+        #                [0, 0, 0]]
+        board.add_mark(0,0,1)
+        board.add_mark(0,2,1)
+        board.add_mark(1,1,1)
+        self.assertEqual(board.get_player_with_score(3), 0)
+        # board.board = [[1, 2, 1],
+        #                 [2, 1, 2],
+        #                 [2, 1, 2]]
+        board.add_mark(0,1,2)
+        board.add_mark(1,0,2)
+        board.add_mark(1,2,2)
+        board.add_mark(2,0,2)
+        board.add_mark(2,1,1)
+        board.add_mark(2,2,2)
+        self.assertEqual(board.get_player_with_score(3), -1)
+        board = Board(size=3)
+        # board.board = [[1, 1, 0],
+        #                 [1, 0, 1],
+        #                 [0, 1, 1]]
+        board.add_mark(0,0,1)
+        board.add_mark(0,1,1)
+        board.add_mark(1,0,1)
+        board.add_mark(1,2,1)
+        board.add_mark(2,1,1)
+        board.add_mark(2,2,1)
+        self.assertEqual(board.get_player_with_score(3), 0)
+        # board.board = [[1, 1, 0],
+        #                 [1, 1, 1],
+        #                 [0, 1, 1]]
+        board.add_mark(1,1,1)
+        self.assertEqual(board.get_player_with_score(3), 1)
 
 def main():
     suite = unittest.TestSuite()
