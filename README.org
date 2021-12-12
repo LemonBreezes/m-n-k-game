@@ -6,11 +6,11 @@
 :END:
 
 This is a version of Tic Tac Toe where the grid size, winning line length, and
-number of human/AI players can be set by the user. Currently, the only way to set values
-for these parameters is by manually editing ~main.py~. A perfect AI has been
-implemented using the minimax algorithm but is too slow for boards larger than
-3x3 because no heuristics have been implemented. Currently, the game is playable
-only from the command line.
+number of human/AI players can be set by the user. Currently, the only way to
+set values for these parameters is by manually editing ~main.py~. A perfect AI has
+been implemented using the minimax algorithm but is too slow for boards larger
+than 3x3 because alpha beta pruning has not been implemented. Currently, the
+game is playable only from the command line.
 
 To install and run this game
 manually, run:
