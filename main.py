@@ -1,12 +1,12 @@
-"""This is a Python Tic Tac Toe game"""
+"""This is an (m,n,k)-game"""
 
 # imports
 import sys
-from game import TicTacToe
+from game import mnkGame
 
 # internal functions & classes
 def main():
-    game = TicTacToe()
+    game = mnkGame()
     game.start()
     return 0
 
