@@ -12,7 +12,7 @@ class AI():
         self.num_players = num_players
         self.winning_row_length = winning_row_length
 
-    def get_move(self, board):
+    def get_move(self, board, ui):
         if self.difficulty == 1:
             return self.get_random_move(board)
         else:
