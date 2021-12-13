@@ -23,7 +23,7 @@ class BoardTests(unittest.TestCase):
         board.add_mark(1,0,1)
         board.add_mark(2,0,1)
         self.assertEqual(board.get_player_score(1), 3)
-        self.assertEqual(board.is_game_over(), False)
+        self.assertEqual(board.has_no_blanks(), False)
         board = Board(size=3, num_players=2)
         # board.board = [[1, 0, 1],
         #                [0, 1, 0],
@@ -32,7 +32,7 @@ class BoardTests(unittest.TestCase):
         board.add_mark(0,2,1)
         board.add_mark(1,1,1)
         self.assertEqual(board.get_player_score(1), 2)
-        self.assertEqual(board.is_game_over(), False)
+        self.assertEqual(board.has_no_blanks(), False)
         # board.board = [[1, 2, 1],
         #                [2, 1, 2],
         #                [2, 1, 2]]
@@ -44,7 +44,7 @@ class BoardTests(unittest.TestCase):
         board.add_mark(2,2,2)
         self.assertEqual(board.get_player_score(2), 2)
         self.assertEqual(board.get_player_score(1), 2)
-        self.assertEqual(board.is_game_over(), True)
+        self.assertEqual(board.has_no_blanks(), True)
         board = Board(size=3, num_players=1)
         # board.board = [[1, 1, 0],
         #                [1, 0, 1],
@@ -56,13 +56,13 @@ class BoardTests(unittest.TestCase):
         board.add_mark(2,1,1)
         board.add_mark(2,2,1)
         self.assertEqual(board.get_player_score(1), 2)
-        self.assertEqual(board.is_game_over(), False)
+        self.assertEqual(board.has_no_blanks(), False)
         # board.board = [[1, 1, 0],
         #                [1, 1, 1],
         #                [0, 1, 1]]
         board.add_mark(1,1,1)
         self.assertEqual(board.get_player_score(1), 3)
-        self.assertEqual(board.is_game_over(), False)
+        self.assertEqual(board.has_no_blanks(), False)
 
 
 class AITests(unittest.TestCase):
@@ -74,7 +74,7 @@ class AITests(unittest.TestCase):
                         winning_row_length=3,
                         running_tests = True)
         game.start()
-        self.assertEqual(game.get_winner(), -1)
+        self.assertEqual(game.get_winner(), None)
 
 def main():
     suite = unittest.TestSuite()

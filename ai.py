@@ -20,13 +20,13 @@ class AI():
 
     def get_random_move(self, board):
         while (True):
-            move = [randrange(board.size), randrange(board.size)]
+            move = [randrange(board.num_rows), randrange(board.num_columns)]
             if not board.is_point_marked(move):
                 return move
 
     def get_possible_next_states(self, board, curr_player):
-        possible_next_states = [None for x, y in product(range(board.size), range(board.size))]
-        for x, y in product(range(board.size), range(board.size)):
+        possible_next_states = [None for x, y in product(range(board.num_rows), range(board.num_columns))]
+        for x, y in product(range(board.num_rows), range(board.num_columns)):
             if not board.is_point_marked([x, y]):
                 temp = board.from_board(board)
                 temp.add_mark(x, y, curr_player)
@@ -44,7 +44,7 @@ class AI():
     def score_state(self, board, prev_player, depth = 0):
         if board.get_player_score(prev_player) >= self.winning_row_length:
             return depth + 1 if prev_player == self.player_id else -(depth + 1)
-        elif board.is_game_over():
+        elif board.has_no_blanks():
             return 0
         next_player = max((prev_player + 1) % (self.num_players + 1),1)
         possible_next_states = self.get_possible_next_states(board, next_player)
