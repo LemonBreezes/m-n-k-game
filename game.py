@@ -11,9 +11,9 @@ from cli import CLI
 class mnkGame():
     def __init__(self,
                num_rows=3,
-               num_columns=4,
-               num_human_players=0,
-               num_ai_players=2,
+               num_columns=3,
+               num_human_players=1,
+               num_ai_players=1,
                ai_difficulty=2,
                winning_row_length=3,
                graphical=False):

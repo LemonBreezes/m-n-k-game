@@ -39,22 +39,40 @@ class AI():
                   if state is not None
                   else (- inf)
                   for state in possible_next_states]
+        print('Minimax scores: {scores}'.format(
+            p_id=self.player_id,scores=scores))
         return board.unhash(max(range(len(scores)), key=scores.__getitem__))
 
-    def score_state(self, board, prev_player, depth = 0):
+    def score_state(self, board, prev_player, depth=1, alpha=-inf, beta=inf):
         if board.get_player_score(prev_player) >= self.winning_row_length:
-            return 1/(depth + 1) if prev_player == self.player_id else -1/(depth + 1)
+            return 1/depth if prev_player == self.player_id else -1/depth
         elif board.has_no_blanks():
             return 0
-        next_player = max((prev_player + 1) % (self.num_players + 1),1)
-        possible_next_states = self.get_possible_next_states(board, next_player)
-        if prev_player != self.player_id:
-            return max([self.score_state(state, next_player, depth + 1)
-                   if state
-                   else (- inf)
-                   for state in possible_next_states])
+
+        current_player = max((prev_player+1)%(self.num_players+1),1)
+        if current_player == self.player_id:
+            optimal_score = -inf
+            for x, y in product(range(board.num_rows), range(board.num_columns)):
+                if board.is_point_marked([x, y]):
+                    continue
+                state = board.from_board(board)
+                state.add_mark(x, y, current_player)
+                score = self.score_state(state, current_player, depth+1, alpha, beta)
+                optimal_score = max(optimal_score, score)
+                alpha = max(score, optimal_score)
+                if beta <= alpha:
+                    break
+            return optimal_score
         else:
-            return min([self.score_state(state, next_player, depth + 1)
-                   if state
-                   else inf
-                   for state in possible_next_states])
+            optimal_score = inf
+            for x, y in product(range(board.num_rows), range(board.num_columns)):
+                if board.is_point_marked([x, y]):
+                    continue
+                temp = board.from_board(board)
+                temp.add_mark(x, y, current_player)
+                score = self.score_state(temp, current_player, depth+1, alpha, beta)
+                optimal_score = min(optimal_score, score)
+                beta = min(score, optimal_score)
+                if beta <= alpha:
+                    break
+            return optimal_score
