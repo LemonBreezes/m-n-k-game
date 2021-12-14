@@ -6,9 +6,7 @@
 :END:
 
 This project is a work in progress. A perfect AI has been implemented using the
-minimax algorithm but is too slow for boards larger than 3x3 (3x4 if you wait a
-few minutes for the first move) because alpha beta pruning has not been
-implemented.
+minimax algorithm but is slow boards larger than 3x4.
 
 To install and run this game
 manually, run:
