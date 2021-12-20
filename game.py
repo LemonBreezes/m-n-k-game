@@ -330,7 +330,6 @@ class MnkGame:
     def minimax(
         self,
         is_maximizing: bool = False,
-        depth: int = 1,
         alpha: int = MINUS_INF,
         beta: int = INF,
         scores: Dict[int, int] = {},
@@ -339,7 +338,6 @@ class MnkGame:
         Args:
             is_maximizing (bool): True if the current player is the one who
             began the computation. That player is known as the maximizing player.
-            depth (int): The depth of recursion. Used in scoring so that the AI
             prefers moves which lead to faster wins and slower losses.
             alpha (int): The highest score found so far, or -INF.
             beta (int): The lowest score found so far, or INF.
@@ -354,7 +352,7 @@ class MnkGame:
         if outcome == DRAW:
             return 0
         if outcome in (PLAYER_ONE, PLAYER_TWO):
-            return -1 / depth if is_maximizing else 1 / depth
+            return -1 if is_maximizing else 1
 
         if is_maximizing:
             optimal_score: int = MINUS_INF
@@ -362,7 +360,7 @@ class MnkGame:
                 if self.board[x][y] != BLANK_TILE:
                     continue
                 self.do_move(x, y)
-                score = self.minimax(False, depth + 1, alpha, beta, scores)
+                score = self.minimax(False, alpha, beta, scores)
                 scores[self.zobrist_hash] = score
                 self.undo_move()
                 optimal_score = max(optimal_score, score)
@@ -375,7 +373,8 @@ class MnkGame:
             if self.board[x][y] != BLANK_TILE:
                 continue
             self.do_move(x, y)
-            score = self.minimax(True, depth + 1, alpha, beta, scores)
+            score = self.minimax(True, alpha, beta, scores)
+            scores[self.zobrist_hash] = score
             self.undo_move()
             optimal_score = min(optimal_score, score)
             beta = min(score, optimal_score)

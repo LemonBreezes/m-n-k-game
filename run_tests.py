@@ -60,6 +60,16 @@ class gameTests(unittest.TestCase):
         ]
         self.assertEqual(blank_board, game.board)
         game = MnkGame(
+            num_rows=4,
+            num_columns=4,
+            winning_row_length=3,
+            is_human_playing=False,
+            graphic=None,
+            opening_player=PLAYER_ONE,
+        )
+        game.start()
+        self.assertEqual(game.outcome, PLAYER_ONE)
+        game = MnkGame(
             num_rows=3,
             num_columns=3,
             winning_row_length=3,
