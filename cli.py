@@ -43,10 +43,3 @@ class CLI:
 
     def tile_to_string(self, tile):
         return TILES[tile]
-
-    def display_progress(self, progress, total):
-        loading = '.' * total
-        print('\r%s Scored %3d percent of all possible moves!' % (loading, progress*100/total), end='')
-        loading = loading[:progress] + '#' + loading[progress+1:]
-        if progress == total:
-            print()

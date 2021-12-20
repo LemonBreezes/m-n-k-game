@@ -47,4 +47,3 @@ python main.py
 - Make the CLI more user-friendly and expose it to users
 - Finish documenting all the functions and classes.
 - Add a way to change game parameters such as board size.
-- Write a progress bar implementation for the GUI.
