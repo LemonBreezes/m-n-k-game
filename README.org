@@ -34,7 +34,7 @@ python run_tests.py
 :END:
 
 #+begin_src sh
-cd path/of/m-n-k-game
+cd path/to/m-n-k-game
 source venv/bin/activate
 python main.py
 #+end_src
