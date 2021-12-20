@@ -39,7 +39,7 @@ class MnkGame:
         board (list): The game board.
         scores (list): The scores of each player.
         num_blanks (int): The number of blank tiles on the game board.
-        move_history (): The history of each move and score for each player.
+        move_history (list): The history of each move and score for each player.
         zobrist_table (list): A table of hashes for each possible tile state.
         zobrist_hash (int): A hash of the current game board state.
     Args:
