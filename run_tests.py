@@ -2,77 +2,104 @@ import sys
 import unittest
 
 from game import *
-from board import Board
+
+PLAYER_ONE = 0
+PLAYER_TWO = 1
+BLANK_TILE = 2
+DRAW = -1
 
 
-class BoardTests(unittest.TestCase):
-    # def test_add_mark(self):
-    #     board = Board(num_rows=3, num_columns=3, num_players=1)
-    #     board.add_mark(0, 0, player_id=1)
-    #     self.assertEqual(board.board, [[1, 0, 0], [0, 0, 0], [0, 0, 0]])
-    #     board.add_mark(0, 1, player_id=1)
-    #     self.assertEqual(board.board, [[1, 1, 0], [0, 0, 0], [0, 0, 0]])
-    #     board.add_mark(0, 2, player_id=1)
-    #     self.assertEqual(board.board, [[1, 1, 1], [0, 0, 0], [0, 0, 0]])
-
-    def test_hash_state(self):
-        board = Board(num_rows=3, num_columns=3, num_players=2)
-        board.board = [1 for _ in range(board.num_rows * board.num_columns)]
-        self.assertEqual(board.board, board.unhash_state(board.hash_state()))
-        board.board = [0 for _ in range(board.num_rows * board.num_columns)]
-        self.assertEqual(board.board, board.unhash_state(board.hash_state()))
-        board.board = [1, 0, 1, 0, 1, 0, 1, 0, 1]
-        self.assertEqual(board.board, board.unhash_state(board.hash_state()))
-
-    def test_get_player_score(self):
-        board = Board(num_rows=3, num_columns=3, num_players=2)
-        board.add_mark(0, 0, 1)
-        board.add_mark(1, 0, 1)
-        board.add_mark(2, 0, 1)
-        self.assertEqual(board.get_player_score(1), 3)
-        self.assertEqual(board.has_no_blanks(), False)
-        board = Board(num_rows=3, num_columns=3, num_players=2)
-        board.add_mark(0, 0, 1)
-        board.add_mark(0, 2, 1)
-        board.add_mark(1, 1, 1)
-        self.assertEqual(board.get_player_score(1), 2)
-        self.assertEqual(board.has_no_blanks(), False)
-        board.add_mark(0, 1, 2)
-        board.add_mark(1, 0, 2)
-        board.add_mark(1, 2, 2)
-        board.add_mark(2, 0, 2)
-        board.add_mark(2, 1, 1)
-        board.add_mark(2, 2, 2)
-        self.assertEqual(board.get_player_score(2), 2)
-        self.assertEqual(board.get_player_score(1), 2)
-        self.assertEqual(board.has_no_blanks(), True)
-        board = Board(num_rows=3, num_columns=3, num_players=1)
-        board.add_mark(0, 0, 1)
-        board.add_mark(0, 1, 1)
-        board.add_mark(1, 0, 1)
-        board.add_mark(1, 2, 1)
-        board.add_mark(2, 1, 1)
-        board.add_mark(2, 2, 1)
-        self.assertEqual(board.get_player_score(1), 2)
-        self.assertEqual(board.has_no_blanks(), False)
-        board.add_mark(1, 1, 1)
-        self.assertEqual(board.get_player_score(1), 3)
-        self.assertEqual(board.has_no_blanks(), False)
-
-
-class AITests(unittest.TestCase):
-    def test_minimax(self):
-        game = mnkGame(
+class gameTests(unittest.TestCase):
+    def test_undo(self):
+        game = MnkGame(
             num_rows=3,
             num_columns=3,
-            num_human_players=0,
-            num_ai_players=2,
-            ai_difficulty=2,
             winning_row_length=3,
+            is_human_playing=False,
             graphic=None,
+            opening_player=PLAYER_ONE,
+        )
+        blank_board = [
+            [BLANK_TILE for _ in range(game.num_columns)] for _ in range(game.num_rows)
+        ]
+        game.do_move(1, 1)
+        game.undo_move()
+        self.assertEqual(game.board, blank_board)
+        game.do_move(1, 1)
+        game.do_move(0, 1)
+        game.undo_move()
+        game.undo_move()
+        self.assertEqual(game.board, blank_board)
+
+    def test_switch_players(self):
+        game = MnkGame(
+            num_rows=3,
+            num_columns=3,
+            winning_row_length=3,
+            is_human_playing=False,
+            graphic=None,
+            opening_player=PLAYER_ONE,
+        )
+        player = game.current_player
+        game.switch_players()
+        self.assertIsNot(player, game.current_player)
+        game.switch_players()
+        self.assertEqual(player, game.current_player)
+
+    def test_minimax(self):
+        game = MnkGame(
+            num_rows=3,
+            num_columns=3,
+            winning_row_length=3,
+            is_human_playing=False,
+            graphic=None,
+            opening_player=PLAYER_ONE,
+        )
+        blank_board = [
+            [BLANK_TILE for _ in range(game.num_columns)] for _ in range(game.num_rows)
+        ]
+        self.assertEqual(blank_board, game.board)
+        game = MnkGame(
+            num_rows=3,
+            num_columns=3,
+            winning_row_length=3,
+            is_human_playing=False,
+            graphic=None,
+            opening_player=PLAYER_ONE,
         )
         game.start()
-        self.assertEqual(game.get_winner(), DRAW)
+        self.assertEqual(game.outcome, DRAW)
+
+    def test_get_move(self):
+        game = MnkGame(
+            num_rows=3,
+            num_columns=3,
+            winning_row_length=3,
+            is_human_playing=False,
+            graphic=None,
+            opening_player=PLAYER_ONE,
+        )
+        blank_board = [
+            [BLANK_TILE for _ in range(game.num_columns)] for _ in range(game.num_rows)
+        ]
+        game.get_move()
+        self.assertEqual(blank_board, game.board)
+
+    def test_get_game_outcome(self):
+        game = MnkGame(
+            num_rows=3,
+            num_columns=3,
+            winning_row_length=3,
+            is_human_playing=False,
+            graphic=None,
+            opening_player=PLAYER_ONE,
+        )
+        game.do_move(0, 0)
+        game.do_move(1, 1)
+        game.do_move(0, 1)
+        game.do_move(1, 0)
+        game.do_move(0, 2)
+        self.assertEqual(game.get_game_outcome(), PLAYER_ONE)
 
 
 def main():

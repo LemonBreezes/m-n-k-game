@@ -1,12 +1,9 @@
 """This is an (m,n,k)-game"""
-
-# imports
 import sys
-from game import mnkGame
+from game import MnkGame
 
-# internal functions & classes
 def main():
-    game = mnkGame()
+    game = MnkGame()
     game.start()
     return 0
 

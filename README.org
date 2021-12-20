@@ -1,17 +1,49 @@
 
+[[./assets/screenshot.png]]
 
-* (m,n,k)-game
+* Introduction
+:PROPERTIES:
+:CREATED_TIME: [2021-12-19 Sun 18:44]
+:END:
+
+A simple, modified version of Tic Tac Toe implemented with AI in Python using
+PyGame.
+
+* Installation
 :PROPERTIES:
 :CREATED_TIME: [2021-11-07 Sun 21:44]
 :END:
 
-This project is a work in progress. A perfect AI has been implemented using the
-minimax algorithm but is slow boards larger than 4x4.
+** From source
+:PROPERTIES:
+:CREATED_TIME: [2021-12-19 Sun 18:46]
+:END:
 
-To install and run this game
-manually, run:
 #+begin_src sh
 git clone https://github.com/LemonBreezes/m-n-k-game
 cd m-n-k-game
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python run_tests.py
+#+end_src
+
+* Usage
+:PROPERTIES:
+:CREATED_TIME: [2021-12-19 Sun 18:55]
+:END:
+
+#+begin_src sh
+cd path/of/m-n-k-game
+source venv/bin/activate
 python main.py
 #+end_src
+
+* Future direction
+:PROPERTIES:
+:CREATED_TIME: [2021-12-19 Sun 18:52]
+:END:
+
+- Finish documenting all the functions and classes.
+- Add a way to change game parameters such as board size.
+- Write a progress bar implementation for the GUI.
