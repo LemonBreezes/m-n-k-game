@@ -3,6 +3,7 @@
 game.py file
 Contains main module of this repositry.
 https://github.com/LemonBreezes/m-n-k-game"""
+
 # Python module(s)
 import random
 from itertools import product
@@ -43,16 +44,17 @@ class MnkGame:
         zobrist_table (list): A table of hashes for each possible tile state.
         zobrist_hash (int): A hash of the current game board state.
     Args:
-        is_human_playing (bool): Disable/Enable AI
-        graphic (bool or None): GUI(true), command line interface(false), or no interface (None)
-        winning_row_length (int): Number of tiles required in a line to win.
-        num_rows (int): Number of rows
-        num_col (int): Number of columns
+        is_human_playing (bool): Disable/Enable AI.
+        graphic (bool or None): GUI(true), command line interface(false), or no
+            interface (None).
+        winning_row_length (int): The number of tiles required in a line to win.
+        num_rows (int): The number of rows.
+        num_col (int): The number of columns.
     Raises:
-        TypeError: Expected 'int' for num_rows, num_columns, winning_row_length
-        TypeError: Expected 'bool' for is_human_playing, graphic
-        ValueError: Argument [num_rows, num_col, winning_row_length] needs to be positive
-        ValueError: No winning combination possible in [num_rows, num_col, winning_row_length]"""
+        TypeError: Expected 'int' for num_rows, num_columns, winning_row_length.
+        TypeError: Expected 'bool' for is_human_playing, graphic.
+        ValueError: Argument [num_rows, num_col, winning_row_length] needs to be positive.
+        ValueError: No winning combination possible in [num_rows, num_col, winning_row_length]."""
 
     def __init__(
         self,
