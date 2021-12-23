@@ -87,7 +87,3 @@ class CLI:
             print("Your choice of move is invalid.")
             x, y = [int(x) - 1 for x in input("Make your move: ").split()]
         return x, y
-
-    def tile_to_string(self, tile: int) -> str:
-        """Returns a string representation of the given tile."""
-        return TILES[tile]
