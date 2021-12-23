@@ -29,15 +29,17 @@ TILES = {PLAYER_ONE: 'X', PLAYER_TWO: 'O', BLANK_TILE: ' '}
 # pylint: disable=no-member
 
 class GUI:
+    """UI class for PyGame GUI.
+    Attributes:
+        width (int): The width in pixels of the game window.
+        height (int): The height in pixels of the game window.
+        screen (obj): An object representing the game window.
+    Args:
+        num_rows (int): The number of rows in the game board.
+        num_columns (int): The number of columns in the game board."""
+
     def __init__(self, num_rows, num_columns):
-        """UI class for PyGame GUI.
-        Attributes:
-            width (int): The width in pixels of the game window.
-            height (int): The height in pixels of the game window.
-            screen (obj): An object representing the game window.
-        Args:
-            num_rows (int): The number of rows in the game board.
-            num_columns (int): The number of columns in the game board."""
+        """Initializes a blank game window."""
         self.width = num_rows * BLOCKSIZE
         self.height = num_columns * BLOCKSIZE
 
@@ -47,6 +49,7 @@ class GUI:
         pygame.display.set_caption("Python Tic Tac Toe")
 
     def display_board(self, board):
+        """Draws the background and game board onto the game window."""
         self.draw_background()
         for x, y in product(
             range(0, self.width, BLOCKSIZE),
@@ -59,6 +62,7 @@ class GUI:
         pygame.display.update()
 
     def display_outcome(self, winner):
+        """Displays the outcome of the game on the game window."""
         message = ""
         if winner != DRAW:
             message = "Player {winner} has won!".format(winner=TILES[winner])
@@ -69,9 +73,11 @@ class GUI:
         sleep(1.5)
 
     def display_move(self, x, y, player):
+        """This function does not currently do anything."""
         pass
 
     def get_human_player_move(self, board):
+        """Waits until the user enters a game move or closes the window."""
         clock = pygame.time.Clock()
         while True:
             for event in pygame.event.get():
@@ -85,6 +91,7 @@ class GUI:
 
 
     def draw_text(self, x, y, s):
+        """Draws text onto the game window at the given coordinates"""
         font_size = 64 if len(str(s)) < 7 else 32
         font = pygame.font.Font(None, font_size)
         text_surface = font.render(str(s), True, WHITE, BLACK)
@@ -93,8 +100,10 @@ class GUI:
         self.screen.blit(text_surface, text_rect)
 
     def draw_rect(self, x, y):
+        """Draws a rectangle onto the game window at the given coordinates."""
         rect = pygame.Rect(x, y, BLOCKSIZE, BLOCKSIZE)
         pygame.draw.rect(self.screen, WHITE, rect, 1)
 
     def draw_background(self):
+        """Draws the background for the game window."""
         pygame.draw.rect(self.screen, BLACK, (0, 0, self.width, BLOCKSIZE))
