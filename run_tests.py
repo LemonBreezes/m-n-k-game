@@ -11,6 +11,7 @@ DRAW = -1
 
 class gameTests(unittest.TestCase):
     def test_undo(self):
+        """Tests that undoing restores the game board to its previous state."""
         game = MnkGame(
             num_rows=3,
             num_columns=3,
@@ -32,6 +33,8 @@ class gameTests(unittest.TestCase):
         self.assertEqual(game.board, blank_board)
 
     def test_switch_players(self):
+        """Tests that switching players does not leave the current player
+        unchanged."""
         game = MnkGame(
             num_rows=3,
             num_columns=3,
@@ -47,6 +50,8 @@ class gameTests(unittest.TestCase):
         self.assertEqual(player, game.current_player)
 
     def test_minimax(self):
+        """Tests that our games always finish in a draw when two AIs are playing
+        against each other."""
         game = MnkGame(
             num_rows=3,
             num_columns=3,
@@ -81,6 +86,8 @@ class gameTests(unittest.TestCase):
         self.assertEqual(game.outcome, DRAW)
 
     def test_get_move(self):
+        """Tests that the AI does not modify the game board when computing its
+        next move."""
         game = MnkGame(
             num_rows=3,
             num_columns=3,
@@ -96,6 +103,7 @@ class gameTests(unittest.TestCase):
         self.assertEqual(blank_board, game.board)
 
     def test_get_game_outcome(self):
+        """Tests that we can detect when a player makes a winning row."""
         game = MnkGame(
             num_rows=3,
             num_columns=3,

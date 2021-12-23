@@ -1,7 +1,7 @@
 """A UI class implementing a command line interface for our game."""
 
 # Python module(s)
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 
 # Constants
 DRAW: int = -1
