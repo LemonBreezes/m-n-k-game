@@ -49,13 +49,13 @@ python main.py
 :CREATED_TIME: [2021-12-24 Fri 17:54]
 :END:
 
-By running
+You can set the length and with of the game board with the ~-r~ and ~-c~ options as
+follows:
 #+begin_src sh
 python main.py -r 3 -c 4
 #+end_src
-We are indicating that the game board will have a length of 3 and width of 4. By
-default, our games run on a 4x4 game board. Setting the length or width greater
-than 4 is not recommended for performance reasons.
+Setting the length or width greater than 4 is not recommended for performance
+reasons. The length and width default to 4 and 4 respectively.
 
 You can also set the amount of tiles a player needs to align in order to win by
 using the ~-w~ flag:
