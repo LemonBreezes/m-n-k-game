@@ -17,7 +17,6 @@ from typing import Union, List, Tuple, Dict
 # User module(s)
 from gui import GUI
 from cli import CLI
-from env import *
 
 # Constants
 PLAYER_ONE: int = 0
