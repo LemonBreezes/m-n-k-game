@@ -5,6 +5,7 @@ tmp/
 
 *.py[cod]
 *.egg
+*.spec
 build
 htmlcov
 __pycache__
