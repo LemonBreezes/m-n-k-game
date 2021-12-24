@@ -377,7 +377,9 @@ class MnkGame:
                 if self.board[x][y] != BLANK_TILE:
                     continue
                 self.do_move(x, y)
-                score = scores[self.zobrist_hash] = self.minimax(False, alpha, beta, scores)
+                score = scores[self.zobrist_hash] = self.minimax(
+                    False, alpha, beta, scores
+                )
                 self.undo_move()
                 optimal_score = max(optimal_score, score)
                 alpha = max(alpha, optimal_score)

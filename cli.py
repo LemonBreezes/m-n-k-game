@@ -32,7 +32,7 @@ class CLI:
         Args:
             board (list): The game board."""
         board: str = "|\n|".join(
-            ["|".join(map(self.tile_to_string, row)) for row in board]
+            ["|".join(map(lambda player: TILES[player], row)) for row in board]
         )
         board = "_" * (2 * self.num_columns) + "_\n|" + board
         board = board + "|\n‾" + "‾" * (2 * self.num_columns)
