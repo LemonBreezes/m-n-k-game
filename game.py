@@ -13,6 +13,7 @@ from math import sqrt
 from time import time
 from nop import NOP
 from typing import Union, List, Tuple, Dict
+from time import sleep
 
 # User module(s)
 from gui import GUI
@@ -127,6 +128,7 @@ class MnkGame:
             self.do_move(x, y)
             self.ui.display_board(self.board)
             self.outcome = self.get_game_outcome()
+            sleep(0.5)
             if self.outcome != None:
                 self.ui.display_outcome(self.outcome)
                 break
