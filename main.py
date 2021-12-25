@@ -60,8 +60,7 @@ def main():
         type=int,
         default=RANDOM,
         help="""What turn do you want to make your first move on?
-        Set to either 1, 2, or -1 for a random player order.
-        """,
+        Set to either 1, 2, or -1 for a random player order.""",
     )
     args = parser.parse_args()
 
