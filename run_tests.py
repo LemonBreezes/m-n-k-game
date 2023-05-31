@@ -23,7 +23,7 @@ class gameTests(unittest.TestCase):
             graphic=None,
             opening_player=PLAYER_ONE,
         )
-        blank_board = [
+        blank_board: List[List[int]] = [
             [BLANK_TILE for _ in range(game.num_columns)] for _ in range(game.num_rows)
         ]
         game.do_move(1, 1)
@@ -63,7 +63,7 @@ class gameTests(unittest.TestCase):
             graphic=None,
             opening_player=PLAYER_ONE,
         )
-        blank_board = [
+        blank_board: List[List[int]] = [
             [BLANK_TILE for _ in range(game.num_columns)] for _ in range(game.num_rows)
         ]
         self.assertEqual(blank_board, game.board)
@@ -99,7 +99,7 @@ class gameTests(unittest.TestCase):
             graphic=None,
             opening_player=PLAYER_ONE,
         )
-        blank_board = [
+        blank_board: List[List[int]] = [
             [BLANK_TILE for _ in range(game.num_columns)] for _ in range(game.num_rows)
         ]
         game.get_move()
