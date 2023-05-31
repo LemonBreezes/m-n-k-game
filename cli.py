@@ -1,5 +1,5 @@
 class CLI:
-    def __init__(self, num_rows, num_columns):
+    def __init__(self):
         pass
 
     def display_board(self, board):
