@@ -8,15 +8,15 @@ from board import Board
 from gui import GUI
 from cli import CLI
 
-class TicTacToe():
+class mnkGame():
     def __init__(self,
                num_rows=3,
-               num_columns=3,
-               num_human_players=1,
-               num_ai_players=1,
+               num_columns=4,
+               num_human_players=0,
+               num_ai_players=2,
                ai_difficulty=2,
                winning_row_length=3,
-               graphical=True):
+               graphical=False):
         self.board = Board(num_rows=num_rows,
                            num_columns=num_columns,
                            num_players=num_human_players + num_ai_players)
@@ -43,11 +43,11 @@ class TicTacToe():
         for i in range(self.num_human_players):
             players.append(Player(player_id=i+1))
         for i in range(self.num_ai_players):
-            players.append(AI(player_id=self.num_human_players+i+1,
+            players.append(
+                AI(player_id=self.num_human_players+i+1,
                               difficulty=self.ai_difficulty,
                               num_players=self.num_human_players + self.num_ai_players,
                               winning_row_length=self.winning_row_length))
-
         self.ui.display_board(self.board)
         turn = 0
         while True:

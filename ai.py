@@ -43,7 +43,7 @@ class AI():
 
     def score_state(self, board, prev_player, depth = 0):
         if board.get_player_score(prev_player) >= self.winning_row_length:
-            return depth + 1 if prev_player == self.player_id else -(depth + 1)
+            return 1/(depth + 1) if prev_player == self.player_id else -1/(depth + 1)
         elif board.has_no_blanks():
             return 0
         next_player = max((prev_player + 1) % (self.num_players + 1),1)

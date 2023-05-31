@@ -39,7 +39,7 @@ class GUI:
             message = 'Draw!'
         self.draw_text(self.width // 2, self.height // 2, message)
         pygame.display.update()
-        sleep(2)
+        sleep(1.5)
 
 
     def display_move(self, x, y, player):

@@ -1,21 +1,19 @@
 
 
-* Python Tic Tac Toe
+* (m,n,k)-game
 :PROPERTIES:
 :CREATED_TIME: [2021-11-07 Sun 21:44]
 :END:
 
-This project is a work in progress. It is a version of Tic Tac Toe where the
-grid size, winning line length, and number of human/AI players can be set by the
-user. Currently, the only way to set values for these parameters is by manually
-editing ~main.py~. A perfect AI has been implemented using the minimax algorithm
-but is too slow for boards larger than 3x3 because alpha beta pruning has not
-been implemented.
+This project is a work in progress. A perfect AI has been implemented using the
+minimax algorithm but is too slow for boards larger than 3x3 (3x4 if you wait a
+few minutes for the first move) because alpha beta pruning has not been
+implemented.
 
 To install and run this game
 manually, run:
 #+begin_src sh
-git clone https://github.com/LemonBreezes/python-tic-tac-toe
-cd python-tic-tac-toe
+git clone https://github.com/LemonBreezes/m-n-k-game
+cd m-n-k-game
 python main.py
 #+end_src
