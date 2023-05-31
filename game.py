@@ -8,7 +8,7 @@ from board import Board
 class TicTacToe():
     def __init__(self, size, num_players, num_ai_players, ai_difficulty,
                winning_row_length, running_tests=False):
-        self.board = Board(size=size)
+        self.board = Board(size=size, num_players=num_players + num_ai_players)
         self.size = size
         self.num_players = num_players
         self.num_ai_players = num_ai_players

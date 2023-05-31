@@ -34,12 +34,6 @@ class AI():
         return possible_next_states
 
     def get_optimal_move(self, board):
-        if board.size == 3:
-            # Heuristic for making the first move
-            if board.board[1][1] == 0:
-                return [1, 1]
-            elif board.num_blanks == 8:
-                return [0, 0]
         possible_next_states = self.get_possible_next_states(board, self.player_id)
         scores = [self.score_state(state, prev_player=self.player_id)
                   if state is not None

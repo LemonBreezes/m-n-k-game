@@ -5,7 +5,7 @@ import sys
 from game import TicTacToe
 
 # constants
-board_size = 3
+board_size = 4
 num_players = 1
 num_ai_players = 1
 winning_row_length = 3
