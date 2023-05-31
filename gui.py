@@ -46,7 +46,7 @@ class GUI:
 
         pygame.init()
         pygame.font.init()
-        self.screen: S = pygame.display.set_mode((self.width, self.height))
+        self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Python Tic Tac Toe")
 
     def display_board(self, board: List[List[int]]) -> None:
