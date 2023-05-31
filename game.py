@@ -366,7 +366,7 @@ class MnkGame:
             return score
 
         outcome: Union[int, None] = self.get_game_outcome()
-        if outcome:
+        if outcome != None:
             return 0 if outcome == DRAW else -1 if is_maximizing else 1
 
         if is_maximizing:
