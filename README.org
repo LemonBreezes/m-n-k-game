@@ -45,5 +45,5 @@ python main.py
 :END:
 
 - Make the CLI more user-friendly and expose it to users
-- Finish documenting all the functions and classes.
+- Document the tests.
 - Add a way to change game parameters such as board size.
