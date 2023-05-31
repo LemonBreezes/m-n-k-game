@@ -5,7 +5,7 @@ from ai import AI
 from player import Player
 from board import Board
 
-class GeneralizedTicTacToe():
+class TicTacToe():
     def __init__(self, size, num_players, num_ai_players, ai_difficulty, winning_row_length):
         self.board = Board(size=size)
         self.size = size

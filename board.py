@@ -22,23 +22,23 @@ class Board():
     def unhash(self, p):
         return [p // self.size, p % self.size]
 
-    def add_mark(self, x, y, p_id):
-        self.board[x][y] = p_id
+    def add_mark(self, x, y, player_id):
+        self.board[x][y] = player_id
         self.num_blanks -= 1
         for i, j in product(range(-1,2), range(-1,2)):
             if i == 0 and j == 0:
                 continue
-            if (self.is_point_valid(x+i, y+j) and self.board[x+i][y+j] == p_id):
+            if (self.is_point_valid(x+i, y+j) and self.board[x+i][y+j] == player_id):
                 a, b = x+i, y+j
                 aligned_points = {self.hash(x, y), self.hash(a, b)}
                 c, d = a, b
                 while (self.is_point_valid(c + a - x, d + b - y)
-                        and self.board[c + a - x][d + b - y] == p_id):
+                        and self.board[c + a - x][d + b - y] == player_id):
                     aligned_points.add((c + a - x, d + b - y))
                     c, d = c + a - x, d + b - y
                 c, d = x, y
                 while (self.is_point_valid(c - a + x, d - b + y)
-                        and self.board[c - a + x][d - b + y] == p_id):
+                        and self.board[c - a + x][d - b + y] == player_id):
                     aligned_points.add((c - a + x, d - b + y))
                     c, d = c - a + x, d - b + y
                 self.lines[self.hash(x,y)] = self.lines[self.hash(x+i,y+j)] = aligned_points

@@ -8,7 +8,7 @@ from board import Board
 class AI():
     def __init__(self, player_id, difficulty, num_players, winning_row_length):
         self.difficulty = difficulty
-        self.p_id = player_id
+        self.player_id = player_id
         self.num_players = num_players
         self.winning_row_length = winning_row_length
 
@@ -34,8 +34,8 @@ class AI():
         return possible_next_states
 
     def get_optimal_move(self, board):
-        possible_next_states = self.get_possible_next_states(board, self.p_id)
-        scores = [self.score_state(state, prev_player=self.p_id)
+        possible_next_states = self.get_possible_next_states(board, self.player_id)
+        scores = [self.score_state(state, prev_player=self.player_id)
                   if state is not None
                   else (- inf)
                   for state in possible_next_states]
@@ -48,9 +48,9 @@ class AI():
         if winner == -1:
             return 0
         elif winner > 0:
-            return depth + 1 if winner == self.p_id else -(depth + 1)
+            return depth + 1 if winner == self.player_id else -(depth + 1)
         possible_next_states = self.get_possible_next_states(board, next_player)
-        if prev_player != self.p_id:
+        if prev_player != self.player_id:
             return max([self.score_state(state, next_player, depth + 1)
                    if state
                    else (- inf)
