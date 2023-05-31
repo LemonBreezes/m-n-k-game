@@ -1,6 +1,4 @@
-"""@author: ***REMOVED***
-
-@email: ***REMOVED***
+"""@author: LemonBreezes
 
 main.py file for demonstrating the use of the m_n_k_game module.
 
