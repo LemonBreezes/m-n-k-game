@@ -34,6 +34,8 @@ class AI():
         return possible_next_states
 
     def get_optimal_move(self, board):
+        if board.num_blanks == 9 and board.size == 3:
+            return [1, 1]
         possible_next_states = self.get_possible_next_states(board, self.player_id)
         scores = [self.score_state(state, prev_player=self.player_id)
                   if state is not None
