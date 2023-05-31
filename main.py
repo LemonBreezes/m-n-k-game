@@ -14,7 +14,7 @@ from argparse import ArgumentParser, BooleanOptionalAction
 from game import MnkGame
 
 # Constants
-RANDOM: int = -1
+RANDOM: int = 0
 
 
 def main():
