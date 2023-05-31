@@ -102,13 +102,20 @@ class TicTacToeBoard(object):
         board = board + '|\n‾' + '‾' * (self.size * 2)
         print(board)
 
+    def _hashCoordinate(self, x, y):
+        return x + y*self.size
+
     def addMark(self, x, y, player):
         self.board[x][y] = player
-        for i, j in range(-1,1):
-            if 0 < x + i < self.size and 0 < y + j < self.size and self.board[x + i][x + j] == player:
-                self.adjacencies.add([player, {x + y*self.size, (x + i) + (y + j)*self.size}])
-
-    def winner(self):
+        for i, j in product(range(-1,1),range(-1,1)):
+                if (0 < x + i < self.size
+                    and 0 < y + j < self.size
+                    and self.board[x + i][x + j] == player):
+                    self.adjacencies.add(
+                        (player, {_hashCoordinate(x, y), _hashCoordinate(x+i,y+j)})
+                    )
+                    
+    def getWinner(self):
         if len(self.adjacencies) < self.size:
             return 0
 #+end_src
@@ -128,6 +135,16 @@ should be both a matrix of integers and an unordered set of sequences of
 adjacencies. I can use an array of numbers for the board and a set of numbers
 for the sequences of adjacencies.
 
+*** How do I compute the winner?
+:PROPERTIES:
+:CREATED_TIME: [2021-11-08 Mon 09:10]
+:END:
+
+So I just realized a problem with my adjacencies. For a sequence of adjacencies
+to realize a winner, they have to form a line, rather than a corner. For this to
+happen in a triple means that two adjacencies intersect on a point and the other
+two points are not adjacent. Basically, I need to determine if a path is a cycle.
+
 * Imports
 :PROPERTIES:
 :CREATED_TIME: [2021-11-07 Sun 15:59]
@@ -135,4 +152,5 @@ for the sequences of adjacencies.
 
 #+name: tictactoe-main-imports
 #+begin_src python
+from itertools import product
 #+end_src
