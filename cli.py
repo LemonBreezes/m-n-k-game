@@ -4,11 +4,11 @@
 from typing import Tuple, List, Dict
 
 # Constants
-DRAW: int = -1
-PLAYER_ONE: int = 0
-PLAYER_TWO: int = 1
-BLANK_TILE: int = 2
-TILES: Dict[str, int] = {PLAYER_ONE: "X", PLAYER_TWO: "O", BLANK_TILE: " "}
+DRAW = -1
+PLAYER_ONE = 0
+PLAYER_TWO = 1
+BLANK_TILE = 2
+TILES = {PLAYER_ONE: "X", PLAYER_TWO: "O", BLANK_TILE: " "}
 
 
 class CLI:

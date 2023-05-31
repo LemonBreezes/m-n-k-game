@@ -20,14 +20,14 @@ from gui import GUI
 from cli import CLI
 
 # Constants
-PLAYER_ONE: int = 0
-PLAYER_TWO: int = 1
-BLANK_TILE: int = 2
-NUM_PLAYERS: int = 2
-MINUS_INF: int = -2
-INF: int = 2
-DRAW: int = -1
-RANDOM: int = -1
+PLAYER_ONE = 0
+PLAYER_TWO = 1
+BLANK_TILE = 2
+NUM_PLAYERS = 2
+MINUS_INF = -2
+INF = 2
+DRAW = -1
+RANDOM = -1
 
 
 class MnkGame:

@@ -13,15 +13,15 @@ from pygame.locals import *
 from typing import Tuple, Dict, List, TypeVar
 
 # Constants
-BLOCKSIZE: int = 90
-HALF_BLOCKSIZE: int = BLOCKSIZE // 2
-BLACK: Tuple[int, int, int] = (0, 0, 0)
-WHITE: Tuple[int, int, int] = (200, 200, 200)
-DRAW: int = -1
-PLAYER_ONE: int = 0
-PLAYER_TWO: int = 1
-BLANK_TILE: int = 2
-TILES: Dict[str, int] = {PLAYER_ONE: "X", PLAYER_TWO: "O", BLANK_TILE: " "}
+BLOCKSIZE = 90
+HALF_BLOCKSIZE = BLOCKSIZE // 2
+BLACK = (0, 0, 0)
+WHITE = (200, 200, 200)
+DRAW = -1
+PLAYER_ONE = 0
+PLAYER_TWO = 1
+BLANK_TILE = 2
+TILES = {PLAYER_ONE: "X", PLAYER_TWO: "O", BLANK_TILE: " "}
 
 # Disabling pylint because of partial implementation of pygame in C, which is not
 # recognizable by pylint.
