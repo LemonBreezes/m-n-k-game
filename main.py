@@ -54,16 +54,23 @@ class TicTacToeBoard(object):
         return not (self._isPointInBoard(x,y) and self._board[x][y] == 0)
 
     def getWinner(self):
-        num_aligned = 1
+        for lines in self.getSetOfLines():
+            if len(lines) >= self._winning_row_length:
+                p = next(iter(lines))
+                player = self._board[p[0]][p[1]]
+                return player
+        return 0
+    
+    def getSetOfLines(self):
+        setOfLines = []
         for player in range(1,self._num_players + 1):
             for x, y in product(range(self._size), range(self._size)):
                 p = (x,y)
                 q = self._getSecondPoint(x,y,player)
                 # print('The second point is: ' + str(q))
-                if (q and len(self._getAllAlignedPoints(p, q, player))
-                    >= self._winning_row_length):
-                    return player
-        return 0
+                if q: setOfLines.insert(0, self._getAllAlignedPoints(p, q, player))
+        return setOfLines
+        
 
     def _getSecondPoint(self, x, y, player):
         if self._board[x][y] != player:
@@ -99,17 +106,18 @@ class TicTacToeBoard(object):
         self._board = [[0 for i in range(self.size)] for j in range(self.size)]
 
 class TicTacToeAI(object):
-    def __init__(self, board, player_id, difficulty):
+    def __init__(self, board, player_id, difficulty, num_players):
         self._board = board
-        self.._difficulty = difficulty
+        self._difficulty = difficulty
         self._id = player_id
+        self._num_players = num_players
         pass
 
     def makeNextMove(self):
-        if (self._paradigm == 1):
+        if (self._difficulty == 1):
             self.makeRandomMove()
-        elif (self._paradigm == 2):
-            self.makeOptimalMove()
+        elif (self._difficulty == 2):
+            self.makeDefensiveMove()
 
     def makeRandomMove(self):
         while (True):
@@ -119,7 +127,7 @@ class TicTacToeAI(object):
                 self._board.addMark(x+1,y+1,self._id)
                 break
 
-    def makeOptimalMove(self):
+    def makeDefensiveMove(self):
         pass
 
 class TicTacToeGame(object):
@@ -128,7 +136,7 @@ class TicTacToeGame(object):
 
     def start(self):
         board = self._board
-        AI = TicTacToeAI(board=board, player_id=2, difficulty=AI_difficulty)
+        AI = TicTacToeAI(board=board, player_id=2, difficulty=AI_difficulty, num_players=num_players)
         board.display()
         while True:
             move = [ int(x) for x in input('Make your move: ').split()]
