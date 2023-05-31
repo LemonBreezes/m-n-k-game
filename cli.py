@@ -55,7 +55,7 @@ class CLI:
             x (int): The horizontal coordinate of the tile to be marked by player.
             y (int): The vertical coordinate of the tile to be marked by player.
             player (int): The player making this move."""
-        print(f"Player {player} marks {x} {y}")
+        print(f"Player {player} marks {x+1} {y+1}")
 
     def is_move_invalid(self, x: int, y: int, board: List[List[int]]) -> None:
         """Determines if the coordinates given represent a blank tile on the
