@@ -12,7 +12,7 @@ from itertools import product
 from math import sqrt
 from time import time
 from nop import NOP
-from typing import Union, List, Tuple, Dict
+from typing import Optional, List, Tuple, Dict
 from time import sleep
 
 # User module(s)
@@ -101,7 +101,7 @@ class MnkGame:
             if opening_player == RANDOM
             else opening_player
         )
-        self.outcome: Union[int, None] = None
+        self.outcome: Optional[int] = None
 
         self.board: List[List[int]] = [
             [BLANK_TILE for _ in range(num_columns)] for _ in range(num_rows)
@@ -153,7 +153,7 @@ class MnkGame:
             return self.ui.get_human_player_move(self.board)
         return self.get_optimal_move()
 
-    def do_move(self, x, y, player: Union[int, None] = None) -> None:
+    def do_move(self, x, y, player: Optional[int] = None) -> None:
         """Updates the game state to reflect the player's move choice.
 
         Args:
@@ -194,7 +194,7 @@ class MnkGame:
             return
         self.switch_players()
 
-    def undo_move(self, player: Union[int, None] = None) -> None:
+    def undo_move(self, player: Optional[int] = None) -> None:
         """Restores the board to its previous state.
 
         Args:
@@ -211,7 +211,7 @@ class MnkGame:
         self.zobrist_hash ^= self.zobrist_table[x][y][player]
         self.scores[player] = score
 
-    def get_game_outcome(self) -> Union[int, None]:
+    def get_game_outcome(self) -> Optional[int]:
         """Returns the outcome of the current game, if it has finished.
 
         Returns:
@@ -252,11 +252,11 @@ class MnkGame:
 
         Returns:
             (int, int) A pair of integers representing a game board position."""
-        heuristic_move: Union[Tuple[int, int], None] = self.get_heuristic_move()
+        heuristic_move: Optional[Tuple[int, int]] = self.get_heuristic_move()
         if heuristic_move:
             return heuristic_move
 
-        scores: List[Union[int, None]] = self.score_possible_moves()
+        scores: List[Optional[int]] = self.score_possible_moves()
 
         scores = [score if score == max(scores) else None for score in scores]
 
@@ -287,7 +287,7 @@ class MnkGame:
 
         return self.unhash_point(max(range(len(scores)), key=scores.__getitem__))
 
-    def get_heuristic_move(self) -> Union[Tuple[int, int], None]:
+    def get_heuristic_move(self) -> Optional[Tuple[int, int]]:
         """Uses various heuristics to attempt to compute an optimal move without
         using the minimax algorithm. First, this function checks if this move is
         the first move. If so, it returns the most central position on the game
@@ -301,7 +301,7 @@ class MnkGame:
         if len(self.move_history) == 0:
             return self.num_columns // 2, self.num_rows // 2
 
-        def get_winning_move_for_player(player: int) -> Union[Tuple[int, int], None]:
+        def get_winning_move_for_player(player: int) -> Optional[Tuple[int, int]]:
             """Searches for tiles on the game board which are winning moves
             for `player` and returns the first tile found, if any.
 
@@ -362,11 +362,11 @@ class MnkGame:
 
         Returns:
             (int) The score of the game state as it was when this computation began."""
-        score: Union[int, None] = scores.get(self.zobrist_hash, None)
+        score: Optional[int] = scores.get(self.zobrist_hash, None)
         if score:
             return score
 
-        outcome: Union[int, None] = self.get_game_outcome()
+        outcome: Optional[int] = self.get_game_outcome()
         if outcome != None:
             return 0 if outcome == DRAW else -1 if is_maximizing else 1
 
