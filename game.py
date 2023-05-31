@@ -8,16 +8,18 @@ from board import Board
 from gui import GUI
 from cli import CLI
 
+DRAW = -1
+
 class mnkGame:
     def __init__(
         self,
-        num_rows=3,
-        num_columns=5,
+        num_rows=4,
+        num_columns=4,
         num_human_players=0,
         num_ai_players=2,
         ai_difficulty=2,
         winning_row_length=3,
-        graphic=CLI,
+        graphic=False,
     ):
         self.board = Board(
             num_rows=num_rows,
@@ -31,9 +33,9 @@ class mnkGame:
         self.num_rows = num_rows
         self.num_columns = num_columns
 
-        if graphic == GUI:
+        if graphic == True:
             self.ui = GUI(num_rows, num_columns)
-        elif graphic == CLI:
+        elif graphic == False:
             self.ui = CLI()
         else:
             self.ui = NOP()
@@ -53,6 +55,8 @@ class mnkGame:
                 AI(
                     player_id=self.num_human_players + i + 1,
                     difficulty=self.ai_difficulty,
+                    num_rows=self.num_rows,
+                    num_columns=self.num_columns,
                     num_players=self.num_human_players + self.num_ai_players,
                     winning_row_length=self.winning_row_length,
                 )

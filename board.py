@@ -15,10 +15,9 @@ class Board:
     ):
         self.num_rows = num_rows
         self.num_columns = num_columns
+        self.num_players = num_players
         self.board = (
-            [[0 for _ in range(num_columns)] for _ in range(num_rows)]
-            if board is None
-            else board
+            [0 for _ in range(num_columns * num_rows)] if board is None else board
         )
         self.scores = [0 for _ in range(num_players + 1)] if num_players else scores
         self.num_blanks = num_rows * num_columns if num_blanks is None else num_blanks
@@ -29,10 +28,12 @@ class Board:
         scores = deepcopy(class_instance.scores)
         num_rows = class_instance.num_rows
         num_columns = class_instance.num_columns
+        num_players = class_instance.num_players
         num_blanks = class_instance.num_blanks
         return cls(
             num_rows=num_rows,
             num_columns=num_columns,
+            num_players=num_players,
             board=board,
             scores=scores,
             num_blanks=num_blanks,
@@ -42,10 +43,22 @@ class Board:
         return self.num_columns * x + y
 
     def unhash(self, p):
-        return [p // self.num_columns, p % self.num_columns]
+        return (p // self.num_columns, p % self.num_columns)
+
+    def hash_state(self):
+        res = 0
+        for i in range(self.num_columns * self.num_rows):
+            res += self.board[i] * ((self.num_players + 1) ** i)
+        return res
+
+    def unhash_state(self, hash):
+        res = [0 for i in range(self.num_columns * self.num_rows)]
+        for i in range(self.num_columns * self.num_rows):
+            res[i] = hash // ((self.num_players+1)**i) % (self.num_players + 1)
+        return res
 
     def add_mark(self, x, y, player_id):
-        self.board[x][y] = player_id
+        self.board[self.hash(x, y)] = player_id
         self.num_blanks -= 1
         for i, j in product(range(-1, 2), range(-1, 2)):
             if i == 0 and j == 0:
@@ -66,7 +79,7 @@ class Board:
         return (
             0 <= x < self.num_rows
             and 0 <= y < self.num_columns
-            and self.board[x][y] == player_id
+            and self.board[self.hash(x, y)] == player_id
         )
 
     def is_point_marked(self, move):
@@ -74,7 +87,7 @@ class Board:
         return (
             0 <= x < self.num_rows
             and 0 <= y <= self.num_columns
-            and self.board[x][y] != 0
+            and self.board[self.hash(x, y)] != 0
         )
 
     def get_player_score(self, player_id):
@@ -84,7 +97,12 @@ class Board:
         return self.num_blanks == 0
 
     def __str__(self):
-        board = "|\n|".join(["|".join(map(str, row)) for row in self.board])
+        def partition(l, n):
+            for i in range(0, len(l), n):
+                yield l[i : i + n]
+
+        board = list(partition(self.board, self.num_columns))
+        board = "|\n|".join(["|".join(map(str, row)) for row in board])
         board = "_" * (2 * self.num_columns) + "_\n|" + board
         board = board + "|\n‾" + "‾" * (2 * self.num_columns)
         return board

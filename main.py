@@ -4,10 +4,6 @@
 import sys
 from game import mnkGame
 
-DRAW = -1
-GUI = True
-CLI = False
-
 # internal functions & classes
 def main():
     game = mnkGame()
