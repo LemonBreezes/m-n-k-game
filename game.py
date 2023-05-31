@@ -29,6 +29,7 @@ DRAW = -1
 
 class MnkGame:
     """Main module class used to play the (m,n,k) game.
+
     Attributes:
         num_rows (int): The number of rows in the game board.
         num_columns (int): The number of columns in the game board.
@@ -43,6 +44,7 @@ class MnkGame:
         move_history (list): The history of each move and score for each player.
         zobrist_table (list): A table of hashes for each possible tile state.
         zobrist_hash (int): A hash of the current game board state.
+
     Args:
         is_human_playing (bool): Disable/Enable AI.
         graphic (bool or None): GUI(true), command line interface(false), or no
@@ -50,6 +52,7 @@ class MnkGame:
         winning_row_length (int): The number of tiles required in a line to win.
         num_rows (int): The number of rows in the game board.
         num_col (int): The number of columns in the game board.
+
     Raises:
         TypeError: Expected 'int' for num_rows, num_columns, winning_row_length.
         TypeError: Expected 'bool' for is_human_playing, graphic.
@@ -65,6 +68,8 @@ class MnkGame:
         graphic: bool = True,
         opening_player: int = RANDOM,
     ) -> None:
+        """Initializes the game state."""
+
         if not isinstance(is_human_playing, bool):
             raise TypeError(f"Expected 'bool' not {type(is_human_playing)}.")
         if not isinstance(graphic, bool) and graphic is not None:
@@ -115,6 +120,7 @@ class MnkGame:
 
     def start(self) -> None:
         """Main loop for the (m, n, k)-game."""
+
         self.ui.display_board(self.board)
         while True:
             x, y = self.get_move()
@@ -129,28 +135,33 @@ class MnkGame:
     def get_other_player(self) -> int:
         """Returns the player not who will make the next move,
         if the game does not end before then."""
+
         return PLAYER_ONE if self.current_player is PLAYER_TWO else PLAYER_TWO
 
     def switch_players(self) -> None:
         """Changes the player who is currently playing to the other player."""
+
         self.current_player = self.get_other_player()
 
     def get_move(self) -> Tuple[int, int]:
         """Returns the move that the current player should make.
+
         Returns:
             (int, int) A pair of integers representing what point on the board the
             player should mark."""
+
         if self.current_player == PLAYER_ONE and self.is_human_playing:
             return self.ui.get_human_player_move(self.board)
         return self.get_optimal_move()
 
     def do_move(self, x, y, player: Union[int, None] = None) -> None:
         """Updates the game state to reflect the player's move choice.
+
         Args:
             x (int): The horizontal coordinate of the tile to be marked by player.
             y (int): The vertical coordinate of the tile to be marked by player.
-            player (int): The player making this move.
-        """
+            player (int): The player making this move. """
+
         is_simulating_player: bool = bool(player)
         if player is None:
             player = self.current_player
@@ -187,8 +198,10 @@ class MnkGame:
 
     def undo_move(self, player: Union[int, None] = None) -> None:
         """Restores the board to its previous state.
+
         Args:
             player (int, optional): The last player to make a move."""
+
         is_simulating_player: bool = bool(player)
         if player is None:
             player = self.get_other_player()
@@ -203,9 +216,11 @@ class MnkGame:
 
     def get_game_outcome(self) -> Union[int, None]:
         """Returns the outcome of the current game, if it has finished.
+
         Returns:
             (int) An integer representing the game outcome or nothing at all if the
             game has not finished."""
+
         for player, score in enumerate(self.scores):
             if score >= self.winning_row_length:
                 return player
@@ -214,12 +229,15 @@ class MnkGame:
 
     def hash_point(self, x, y) -> int:
         """Computes an integer representation of the game board position.
+
         Args:
             x (int): The horizontal component of the given game board position.
             y (int): The vertical component of the given game board position.
+
         Returns:
             (int) An integer between 0 and `num_rows*num_columns - 1` representing
             the game board position given by `x` and `y`."""
+
         return self.num_columns * x + y
 
     def unhash_point(self, p) -> Tuple[int, int]:
@@ -228,15 +246,17 @@ class MnkGame:
             p (int): An integer between 0 and `num_rows*num_columns - 1`
             representing a game board position.
         Returns:
-            (int, int) A pair of integers representing a game board position.
-            """
+            (int, int) A pair of integers representing a game board position. """
+
         return (p // self.num_columns, p % self.num_columns)
 
     def get_optimal_move(self) -> Tuple[int, int]:
         """Returns the optimal move for the current player to make. When multiple
         moves are equal, the move which is closest to the previous move is selected.
+
         Returns:
             (int, int) A pair of integers representing a game board position."""
+
         heuristic_move: Union[Tuple[int, int], None] = self.get_heuristic_move()
         if heuristic_move:
             return heuristic_move
@@ -247,12 +267,15 @@ class MnkGame:
 
         def distance(p: int, q: int) -> float:
             """Computes the Euclidean distance between two points.
+
             Args:
                 p (int): A position on the game board in hashed form.
                 q (int): Another position on the game board in hashed form.
+
             Returns:
                 (float) The Euclidean distance between the two given points
                 on the game board."""
+
             x, y = self.unhash_point(p)
             a, b = self.unhash_point(q)
             return sqrt(((x - a) ** 2) + ((y - b) ** 2))
@@ -276,19 +299,24 @@ class MnkGame:
         the first move. If so, it returns the most central position on the game
         board. Next, it checks if any player is about to win and returns that
         winning position.
+
         Returns:
             (int, int) A pair of integers representing the move, if any are
             computed."""
+
         if len(self.move_history) == 0:
             return self.num_columns // 2, self.num_rows // 2
 
         def get_winning_move_for_player(player: int) -> Union[Tuple[int, int], None]:
             """Searches for tiles on the game board which are winning moves
             for `player` and returns the first tile found, if any.
+
             Args:
                 player (int): The player whose winning move we are searching for.
+
             Returns:
                 (int, int, optional) The winning move, if any are found."""
+
             if self.scores[player] == self.winning_row_length - 1:
                 for x, y in product(range(self.num_rows), range(self.num_columns)):
                     if self.board[x][y] != BLANK_TILE:
@@ -309,8 +337,10 @@ class MnkGame:
 
     def score_possible_moves(self) -> List[int]:
         """Scores the possible moves the current player can make using the minimax algorithm.
+
         Returns:
             (list) A list of scores indexed by hashed board position."""
+
         result = [MINUS_INF for _ in range(self.num_rows * self.num_columns)]
 
         scores: Dict[int, int] = {}
@@ -331,6 +361,7 @@ class MnkGame:
         scores: Dict[int, int] = {},
     ) -> int:
         """Recursively computes the score of the current game state.
+
         Args:
             is_maximizing (bool): True if the current player is the one who
             began the computation. That player is known as the maximizing player.
@@ -338,8 +369,10 @@ class MnkGame:
             alpha (int): The highest score found so far, or -INF.
             beta (int): The lowest score found so far, or INF.
             scores (dict): A hash table of all the maximizing scores computed up to now.
+
         Returns:
             (int) The score of the game state as it was when this computation began."""
+
         score: Union[int, None] = scores.get(self.zobrist_hash, None)
         if score:
             return score
