@@ -34,19 +34,22 @@ class TicTacToe():
             x, y = player.get_move(self.board)
             if not self.running_tests:
                 print('Player', player.player_id, 'marks', x, y, sep=' ')
-            self.board.add_mark(x, y, turn+1)
+            self.board.add_mark(x, y, player.player_id)
             if not self.running_tests:
                 print(str(self.board))
-            winner = self.board.get_player_with_score(self.winning_row_length)
-            if winner == -1:
-                if not self.running_tests:
-                    print('Draw!')
+            if self.board.get_player_score(player.player_id) >= self.winning_row_length:
+                if self.running_tests:
+                    self.winner = player.player_id
+                else:
+                    print('Player ' + str(player.player_id) + ' is the winner!')
                 break
-            elif winner != 0:
-                if not self.running_tests:
-                    print('Player ' + str(winner) + ' is the winner!')
+            elif self.board.is_game_over():
+                if self.running_tests:
+                    self.winner = -1
+                else:
+                    print('Draw!')
                 break
             turn = (turn + 1) % len(players)
 
     def get_winner(self):
-        return self.board.get_player_with_score(self.winning_row_length)
+        return self.winner
