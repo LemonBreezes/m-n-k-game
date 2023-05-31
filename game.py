@@ -356,7 +356,6 @@ class MnkGame:
         Args:
             is_maximizing (bool): True if the current player is the one who
             began the computation. That player is known as the maximizing player.
-            prefers moves which lead to faster wins and slower losses.
             alpha (int): The highest score found so far, or -INF.
             beta (int): The lowest score found so far, or INF.
             scores (dict): A hash table of all the maximizing scores computed up to now.
