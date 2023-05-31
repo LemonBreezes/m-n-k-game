@@ -5,7 +5,10 @@
 :CREATED_TIME: [2021-11-07 Sun 21:44]
 :END:
 
-This is a Python implementation of Tic Tac Toe. To install and run this game
+This is a Python implementation of Tic Tac Toe. Currently it's not finished
+though because there's no AI implemented yet.
+
+To install and run this game
 manually, run:
 #+begin_src sh
 git clone https://github.com/LemonBreezes/python-tic-tac-toe-game
