@@ -75,9 +75,6 @@ class GUI:
                         return [x, y]
 
 
-    def display_progress(self, progress, total):
-        pass
-
     def draw_text(self, x, y, s):
         font_size = 64 if len(str(s)) < 7 else 32
         font = pygame.font.Font(None, font_size)
