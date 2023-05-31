@@ -15,6 +15,7 @@ from typing import Union, List, Tuple, Dict
 # User module(s)
 from gui import GUI
 from cli import CLI
+from env import *
 
 # Constants
 PLAYER_ONE: int = 0
@@ -23,7 +24,6 @@ BLANK_TILE: int = 2
 NUM_PLAYERS: int = 2
 MINUS_INF: int = -2
 INF: int = 2
-RANDOM: int = -1
 DRAW: int = -1
 
 
@@ -61,12 +61,12 @@ class MnkGame:
 
     def __init__(
         self,
-        num_rows: int = 4,
-        num_columns: int = 4,
-        winning_row_length: int = 3,
-        is_human_playing: bool = True,
-        graphic: bool = True,
-        opening_player: int = RANDOM,
+        num_rows: int = NUM_ROWS,
+        num_columns: int = NUM_COLUMNS,
+        winning_row_length: int = WINNING_ROW_LENGTH,
+        is_human_playing: bool = IS_HUMAN_PLAYING,
+        graphic: bool = GRAPHIC,
+        opening_player: int = OPENING_PLAYER,
     ) -> None:
         """Initializes the game state."""
         if not isinstance(is_human_playing, bool):
@@ -95,7 +95,7 @@ class MnkGame:
 
         self.current_player = (
             random.choice([PLAYER_ONE, PLAYER_TWO])
-            if opening_player == RANDOM
+            if opening_player == 'random'
             else opening_player
         )
         self.outcome: Union[int, None] = None
