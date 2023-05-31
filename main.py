@@ -12,6 +12,7 @@ from random import randrange
 board_size = 3
 num_players = 2
 winning_row_length = 3
+AI_difficulty = 1
 
 # exception classes
 
@@ -98,15 +99,17 @@ class TicTacToeBoard(object):
         self._board = [[0 for i in range(self.size)] for j in range(self.size)]
 
 class TicTacToeAI(object):
-    def __init__(self, board, player_id, paradigm):
+    def __init__(self, board, player_id, difficulty):
         self._board = board
-        self._paradigm = paradigm
+        self.._difficulty = difficulty
         self._id = player_id
         pass
 
     def makeNextMove(self):
-        if (self._paradigm == 'random'):
+        if (self._paradigm == 1):
             self.makeRandomMove()
+        elif (self._paradigm == 2):
+            self.makeOptimalMove()
 
     def makeRandomMove(self):
         while (True):
@@ -116,13 +119,16 @@ class TicTacToeAI(object):
                 self._board.addMark(x+1,y+1,self._id)
                 break
 
+    def makeOptimalMove(self):
+        pass
+
 class TicTacToeGame(object):
     def __init__(self, size, num_players, winning_row_length):
         self._board = TicTacToeBoard(size, num_players, winning_row_length)
 
     def start(self):
         board = self._board
-        AI = TicTacToeAI(board=board, player_id=2, paradigm='random')
+        AI = TicTacToeAI(board=board, player_id=2, difficulty=AI_difficulty)
         board.display()
         while True:
             move = [ int(x) for x in input('Make your move: ').split()]
@@ -134,7 +140,7 @@ class TicTacToeGame(object):
             if (board.getWinner() == 1):
                 print('You win!')
                 break
-            sleep(2)
+            sleep(1)
             AI.makeNextMove()
             board.display()
             if (board.getWinner() > 1):
