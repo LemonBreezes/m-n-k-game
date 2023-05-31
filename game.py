@@ -335,7 +335,6 @@ class MnkGame:
         result = [MINUS_INF for _ in range(self.num_rows * self.num_columns)]
 
         scores: Dict[int, int] = {}
-        start: float = time()
         for x, y in product(range(self.num_rows), range(self.num_columns)):
             if self.board[x][y] != BLANK_TILE:
                 continue
