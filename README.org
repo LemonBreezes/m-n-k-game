@@ -49,27 +49,21 @@ python main.py
 :CREATED_TIME: [2021-12-24 Fri 17:54]
 :END:
 
-We may specify additional parameters for our game such as row size, column size,
-the amount tiles a player needs to connect to win, and more! Here, we will go
-through these command line arguments one by one and indicate their default
-values.
-
 By running
 #+begin_src sh
 python main.py -r 3 -c 4
 #+end_src
-We are indicating that the game board should have a length of 3 and width of 4.
-By default, our games run on a 4x4 game board. If you set the length or width
-greater than 4, the AI will potentially take several minutes or hours to make
-its first moves. The AI will generally become faster as the game progresses.
+We are indicating that the game board will have a length of 3 and width of 4. By
+default, our games run on a 4x4 game board. Setting the length or width greater
+than 4 is not recommended for performance reasons.
 
 You can also set the amount of tiles a player needs to align in order to win by
 using the ~-w~ flag:
 #+begin_src sh
 python main.py -w 4
 #+end_src
-This parameter defaults to 3 and any number greater than that will significantly
-increase the amount of time that AI takes to compute its next move.
+This parameter defaults to 3. Increasing this parameter is not recommended for
+performance reasons.
 
 If you would like to watch two AIs play against each other, use the ~-ai~ flag:
 #+begin_src sh
