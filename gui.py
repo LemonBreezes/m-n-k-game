@@ -44,7 +44,7 @@ class GUI:
         self.width: int = num_rows * BLOCKSIZE
         self.height: int = num_columns * BLOCKSIZE
 
-        pygame.init()
+        pygame.display.init()
         pygame.font.init()
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Python Tic Tac Toe")
