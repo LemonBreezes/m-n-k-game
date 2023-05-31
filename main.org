@@ -218,15 +218,9 @@ class TicTacToeAI(object):
         self._id = player_id
         pass
 
-    def _canOpponentWin(self, table):
-        return False
-
     def makeNextMove(self):
         table = self._board.getLinesTable()
-        if (self._difficulty >= 2
-            and self._canOpponentWin()):
-            self.makeDefensiveMove()
-        elif (self._difficulty >= 1):
+        if (self._difficulty == 1):
             self.makeRandomMove()
 
     def makeRandomMove(self):
@@ -236,6 +230,9 @@ class TicTacToeAI(object):
             if (self._board.getBoard()[x][y] == 0):
                 self._board.addMark(x+1,y+1,self._id)
                 break
+
+    def _getPossibleNextStates(self, board):
+        pass
 #+end_src
 
 * Create ~unittest~ tests
