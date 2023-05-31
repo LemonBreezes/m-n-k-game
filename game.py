@@ -16,7 +16,7 @@ class TicTacToe():
                num_ai_players=1,
                ai_difficulty=2,
                winning_row_length=3,
-               graphical=False):
+               graphical=True):
         self.board = Board(num_rows=num_rows,
                            num_columns=num_columns,
                            num_players=num_human_players + num_ai_players)
@@ -52,7 +52,7 @@ class TicTacToe():
         turn = 0
         while True:
             player = players[turn]
-            x, y = player.get_move(self.board)
+            x, y = player.get_move(self.board, self.ui)
             self.ui.display_move(x, y, player)
             self.board.add_mark(x, y, player.player_id)
             self.ui.display_board(self.board)
