@@ -1,14 +1,15 @@
 
 
-* Python Tic Tac Toe game
+* Generalized Tic Tac Toe game
 :PROPERTIES:
 :CREATED_TIME: [2021-11-07 Sun 21:44]
 :END:
 
-In this version Tic Tac Toe, the grid size and winning line length can be
-increased. Currently this game is not finished. Work is being done to implement
-various AI difficulties before commandline options are added to modify game
-parameters.
+This is a version of Tic Tac Toe where the grid size and winning line length can
+be set by the user. Currently, the only way to set values for these parameters
+is by manually editing ~main.py~. A perfect AI has been implemented using the
+minimax algorithm but is too slow for boards larger than 3x3 because no
+heuristics have been implemented.
 
 To install and run this game
 manually, run:
