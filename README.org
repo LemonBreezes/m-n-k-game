@@ -6,7 +6,7 @@
 :END:
 
 In this version Tic Tac Toe, the grid size and winning line length can be
-increased. Currently it's not finished, primarily because there's no AI
+increased. Currently this game is not finished. There is no AI
 implemented yet.
 
 To install and run this game
