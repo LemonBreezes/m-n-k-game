@@ -33,6 +33,11 @@ python run_tests.py
 :CREATED_TIME: [2021-12-19 Sun 18:55]
 :END:
 
+** From source
+:PROPERTIES:
+:CREATED_TIME: [2021-12-23 Thu 20:15]
+:END:
+
 #+begin_src sh
 cd path/to/m-n-k-game
 source venv/bin/activate
