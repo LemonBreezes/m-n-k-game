@@ -44,6 +44,7 @@ python main.py
 :CREATED_TIME: [2021-12-19 Sun 18:52]
 :END:
 
+- Make the CLI more user-friendly and expose it to users
 - Finish documenting all the functions and classes.
 - Add a way to change game parameters such as board size.
 - Write a progress bar implementation for the GUI.
