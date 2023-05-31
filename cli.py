@@ -57,22 +57,6 @@ class CLI:
             player (int): The player making this move."""
         print(f"Player {player} marks {x+1} {y+1}")
 
-    def is_move_invalid(self, x: int, y: int, board: List[List[int]]) -> None:
-        """Determines if the coordinates given represent a blank tile on the
-        game board.
-
-        Args:
-            x (int): A horizontal coordinate.
-            y (int): A vertical coordinate.
-            board (list): The game board."""
-        return (
-            x < 0
-            or y < 0
-            or x >= self.num_columns
-            or y >= self.num_columns
-            or board[x][y] != BLANK_TILE
-        )
-
     def get_human_player_move(self, board: List[List[int]]) -> Tuple[int, int]:
         """Queries the player to make a move until they make a move which
         represents an unoccupied tile on the game board.
@@ -82,8 +66,15 @@ class CLI:
 
         Returns:
             (int, int): The coordinates of the move the player has chosen."""
-        x, y = (int(x) - 1 for x in input("Make your move: ").split())
-        while self.is_move_invalid(x, y, board):
-            print("Your choice of move is invalid.")
-            x, y = [int(x) - 1 for x in input("Make your move: ").split()]
+        try:
+            x, y = (int(x) - 1 for x in input("Make your move: ").split())
+        except ValueError:
+            print("Please enter two numbers separated by spaces.")
+            return self.get_human_player_move(board)
+        if x < 0 or y < 0 or x >= self.num_rows or y >= self.num_columns:
+            print("The coordinates you entered do not lie on the game board.")
+            return self.get_human_player_move(board)
+        if board[x][y] != BLANK_TILE:
+            print("That tile is not blank.")
+            return self.get_human_player_move(board)
         return x, y
