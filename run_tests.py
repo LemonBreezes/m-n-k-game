@@ -53,8 +53,7 @@ class gameTests(unittest.TestCase):
         self.assertEqual(player, game.current_player)
 
     def test_minimax(self):
-        """Tests that our simulated AI versus AI games finish in the Nash
-        equilibrium."""
+        """Tests that our simulated games finish in the Nash equilibrium."""
         game = MnkGame(
             num_rows=3,
             num_columns=3,
