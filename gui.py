@@ -1,12 +1,21 @@
+"""gui.py file
+
+A GUI class for pygame.
+
+Note: In this files pylint configured to ignore 'no member' because of C
+    implementation of several pygame members like constants MOUSEBUTTONDOWN and
+    methods like init()"""
+
+# Python module(s)
 import sys
 from time import sleep
 from itertools import product
 import pygame
 from pygame.locals import *
 
-pygame.font.init()
-
+# Constants
 BLOCKSIZE = 90
+HALF_BLOCKSIZE = BLOCKSIZE // 2
 BLACK = (0, 0, 0)
 WHITE = (200, 200, 200)
 DRAW = -1
@@ -15,11 +24,17 @@ PLAYER_TWO = 1
 BLANK_TILE = 2
 TILES = {PLAYER_ONE: 'X', PLAYER_TWO: 'O', BLANK_TILE: ' '}
 
+# Disabling pylint because of partial implementation of pygame in C, which is not
+# recognizable by pylint.
+# pylint: disable=no-member
 
 class GUI:
     def __init__(self, num_rows, num_columns):
         self.width = num_rows * BLOCKSIZE
         self.height = num_columns * BLOCKSIZE
+
+        pygame.init()
+        pygame.font.init()
         self.screen = self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Python Tic Tac Toe")
 
@@ -31,7 +46,7 @@ class GUI:
             self.draw_rect(x, y)
             tile = board[x // BLOCKSIZE][y // BLOCKSIZE]
             if tile != BLANK_TILE:
-                self.draw_text(x + BLOCKSIZE // 2, y + BLOCKSIZE // 2, TILES[tile])
+                self.draw_text(x + HALF_BLOCKSIZE, y + HALF_BLOCKSIZE, TILES[tile])
         pygame.display.update()
 
     def display_outcome(self, winner):
