@@ -6,11 +6,14 @@ from pygame.locals import *
 
 pygame.font.init()
 
-# constants
 BLOCKSIZE = 90
-
 BLACK = (0, 0, 0)
 WHITE = (200, 200, 200)
+DRAW = -1
+PLAYER_ONE = 0
+PLAYER_TWO = 1
+BLANK_TILE = 2
+TILES = {PLAYER_ONE: 'X', PLAYER_TWO: 'O', BLANK_TILE: ' '}
 
 
 class GUI:
@@ -21,21 +24,20 @@ class GUI:
         pygame.display.set_caption("Python Tic Tac Toe")
 
     def display_board(self, board):
-        pygame.draw.rect(self.screen, BLACK, (0, 0, self.width, BLOCKSIZE))
+        self.draw_background()
         for x, y in product(
             range(0, self.width, BLOCKSIZE), range(0, self.height, BLOCKSIZE)
         ):
-            rect = pygame.Rect(x, y, BLOCKSIZE, BLOCKSIZE)
-            pygame.draw.rect(self.screen, WHITE, rect, 1)
-            mark = board.board[x // BLOCKSIZE][y // BLOCKSIZE]
-            if mark != 0:
-                self.draw_text(x + BLOCKSIZE // 2, y + BLOCKSIZE // 2, mark)
+            self.draw_rect(x, y)
+            tile = board[x // BLOCKSIZE][y // BLOCKSIZE]
+            if tile != BLANK_TILE:
+                self.draw_text(x + BLOCKSIZE // 2, y + BLOCKSIZE // 2, TILES[tile])
         pygame.display.update()
 
     def display_outcome(self, winner):
         message = ""
-        if winner > 0:
-            message = "Player {player_id} has won!".format(player_id=str(winner))
+        if winner != DRAW:
+            message = "Player {winner} has won!".format(winner=TILES[winner])
         else:
             message = "Draw!"
         self.draw_text(self.width // 2, self.height // 2, message)
@@ -54,8 +56,12 @@ class GUI:
                     sys.exit()
                 elif event.type == MOUSEBUTTONDOWN:
                     x, y = [c // BLOCKSIZE for c in pygame.mouse.get_pos()]
-                    if board.board[x][y] == 0:
+                    if board[x][y] == BLANK_TILE:
                         return [x, y]
+
+
+    def display_progress(self, progress, total):
+        pass
 
     def draw_text(self, x, y, s):
         font_size = 64 if len(str(s)) < 7 else 32
@@ -64,3 +70,10 @@ class GUI:
         text_rect = text_surface.get_rect()
         text_rect.center = (x, y)
         self.screen.blit(text_surface, text_rect)
+
+    def draw_rect(self, x, y):
+        rect = pygame.Rect(x, y, BLOCKSIZE, BLOCKSIZE)
+        pygame.draw.rect(self.screen, WHITE, rect, 1)
+
+    def draw_background(self):
+        pygame.draw.rect(self.screen, BLACK, (0, 0, self.width, BLOCKSIZE))
