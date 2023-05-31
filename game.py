@@ -1,7 +1,9 @@
 """@author: ***REMOVED***
+
 @email: ***REMOVED***
-game.py file
-Contains main module of this repositry.
+
+game.py file which contains main module of this repositry.
+
 https://github.com/LemonBreezes/m-n-k-game"""
 
 # Python module(s)
@@ -61,12 +63,12 @@ class MnkGame:
 
     def __init__(
         self,
-        num_rows: int = NUM_ROWS,
-        num_columns: int = NUM_COLUMNS,
-        winning_row_length: int = WINNING_ROW_LENGTH,
-        is_human_playing: bool = IS_HUMAN_PLAYING,
-        graphic: bool = GRAPHIC,
-        opening_player: int = OPENING_PLAYER,
+        num_rows: int = 4,
+        num_columns: int = 4,
+        winning_row_length: int = 3,
+        is_human_playing: bool = True,
+        graphic: bool = True,
+        opening_player: int = 'random',
     ) -> None:
         """Initializes the game state."""
         if not isinstance(is_human_playing, bool):
