@@ -1,6 +1,6 @@
 from time import sleep
 from collections import deque
-import pygame
+from nop import NOP
 
 from ai import AI
 from player import Player
@@ -8,18 +8,22 @@ from board import Board
 from gui import GUI
 from cli import CLI
 
-class mnkGame():
-    def __init__(self,
-               num_rows=3,
-               num_columns=4,
-               num_human_players=1,
-               num_ai_players=1,
-               ai_difficulty=2,
-               winning_row_length=3,
-               graphical=False):
-        self.board = Board(num_rows=num_rows,
-                           num_columns=num_columns,
-                           num_players=num_human_players + num_ai_players)
+class mnkGame:
+    def __init__(
+        self,
+        num_rows=3,
+        num_columns=5,
+        num_human_players=0,
+        num_ai_players=2,
+        ai_difficulty=2,
+        winning_row_length=3,
+        graphic=CLI,
+    ):
+        self.board = Board(
+            num_rows=num_rows,
+            num_columns=num_columns,
+            num_players=num_human_players + num_ai_players,
+        )
         self.num_human_players = num_human_players
         self.num_ai_players = num_ai_players
         self.ai_difficulty = ai_difficulty
@@ -27,27 +31,32 @@ class mnkGame():
         self.num_rows = num_rows
         self.num_columns = num_columns
 
-        if graphical:
+        if graphic == GUI:
             self.ui = GUI(num_rows, num_columns)
-        else:
+        elif graphic == CLI:
             self.ui = CLI()
+        else:
+            self.ui = NOP()
 
     def get_game_outcome(self, player_id):
         if self.board.get_player_score(player_id) >= self.winning_row_length:
             return player_id
         elif self.board.has_no_blanks():
-            return -1
+            return DRAW
 
     def start(self):
         players = []
         for i in range(self.num_human_players):
-            players.append(Player(player_id=i+1))
+            players.append(Player(player_id=i + 1))
         for i in range(self.num_ai_players):
             players.append(
-                AI(player_id=self.num_human_players+i+1,
-                              difficulty=self.ai_difficulty,
-                              num_players=self.num_human_players + self.num_ai_players,
-                              winning_row_length=self.winning_row_length))
+                AI(
+                    player_id=self.num_human_players + i + 1,
+                    difficulty=self.ai_difficulty,
+                    num_players=self.num_human_players + self.num_ai_players,
+                    winning_row_length=self.winning_row_length,
+                )
+            )
         self.ui.display_board(self.board)
         turn = 0
         while True:
