@@ -60,8 +60,10 @@ class TicTacToeGame(object):
         board.display()
         while True:
             move = [ int(x) for x in input('Make your move: ').split()]
-            board.addMark(move[0] - 1,move[1] - 1,1)
+            board.addMark(x=move[0],y=move[1],player=1)
             board.display()
+            if board.getWinner():
+                print('You win!')
 #+end_src
 
 ** Brainstorming
