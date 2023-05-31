@@ -27,7 +27,7 @@ NUM_PLAYERS: int = 2
 MINUS_INF: int = -2
 INF: int = 2
 DRAW: int = -1
-
+RANDOM: int = -1
 
 class MnkGame:
     """Main module class used to play the (m,n,k) game.
@@ -63,12 +63,12 @@ class MnkGame:
 
     def __init__(
         self,
-        num_rows: int = 4,
-        num_columns: int = 4,
-        winning_row_length: int = 3,
-        is_human_playing: bool = True,
-        graphic: bool = True,
-        opening_player: int = 'random',
+        num_rows: int,
+        num_columns: int,
+        winning_row_length: int,
+        is_human_playing: bool,
+        graphic: bool,
+        opening_player: int = RANDOM,
     ) -> None:
         """Initializes the game state."""
         if not isinstance(is_human_playing, bool):
@@ -97,7 +97,7 @@ class MnkGame:
 
         self.current_player = (
             random.choice([PLAYER_ONE, PLAYER_TWO])
-            if opening_player == 'random'
+            if opening_player == RANDOM
             else opening_player
         )
         self.outcome: Union[int, None] = None
@@ -158,7 +158,7 @@ class MnkGame:
         Args:
             x (int): The horizontal coordinate of the tile to be marked by player.
             y (int): The vertical coordinate of the tile to be marked by player.
-            player (int): The player making this move. """
+            player (int): The player making this move."""
         is_simulating_player: bool = bool(player)
         if player is None:
             player = self.current_player
@@ -240,7 +240,7 @@ class MnkGame:
             p (int): An integer between 0 and `num_rows*num_columns - 1`
             representing a game board position.
         Returns:
-            (int, int) A pair of integers representing a game board position. """
+            (int, int) A pair of integers representing a game board position."""
         return (p // self.num_columns, p % self.num_columns)
 
     def get_optimal_move(self) -> Tuple[int, int]:
