@@ -48,8 +48,8 @@ class MnkGame:
         graphic (bool or None): GUI(true), command line interface(false), or no
             interface (None).
         winning_row_length (int): The number of tiles required in a line to win.
-        num_rows (int): The number of rows.
-        num_col (int): The number of columns.
+        num_rows (int): The number of rows in the game board.
+        num_col (int): The number of columns in the game board.
     Raises:
         TypeError: Expected 'int' for num_rows, num_columns, winning_row_length.
         TypeError: Expected 'bool' for is_human_playing, graphic.

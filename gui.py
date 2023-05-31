@@ -30,18 +30,27 @@ TILES = {PLAYER_ONE: 'X', PLAYER_TWO: 'O', BLANK_TILE: ' '}
 
 class GUI:
     def __init__(self, num_rows, num_columns):
+        """UI class for PyGame GUI.
+        Attributes:
+            width (int): The width in pixels of the game window.
+            height (int): The height in pixels of the game window.
+            screen (obj): An object representing the game window.
+        Args:
+            num_rows (int): The number of rows in the game board.
+            num_columns (int): The number of columns in the game board."""
         self.width = num_rows * BLOCKSIZE
         self.height = num_columns * BLOCKSIZE
 
         pygame.init()
         pygame.font.init()
-        self.screen = self.screen = pygame.display.set_mode((self.width, self.height))
+        self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Python Tic Tac Toe")
 
     def display_board(self, board):
         self.draw_background()
         for x, y in product(
-            range(0, self.width, BLOCKSIZE), range(0, self.height, BLOCKSIZE)
+            range(0, self.width, BLOCKSIZE),
+            range(0, self.height, BLOCKSIZE)
         ):
             self.draw_rect(x, y)
             tile = board[x // BLOCKSIZE][y // BLOCKSIZE]
