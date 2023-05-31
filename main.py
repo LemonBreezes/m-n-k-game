@@ -6,6 +6,9 @@ from itertools import product
 from numpy import matrix
 
 # constants
+board_size = 3
+num_players = 1
+winning_row_length = 3
 
 # exception classes
 
@@ -13,10 +16,10 @@ from numpy import matrix
 
 # classes
 class TicTacToeBoard(object):
-    def __init__(self, size):
+    def __init__(self, size, num_players, winning_row_length):
         self._size = size
-        self._num_players = 1
-        self._winning_row_length = size
+        self._num_players = num_players
+        self._winning_row_length = winning_row_length
         self._board = [[0 for i in range(size)] for j in range(size)]
         self._adjacency_matrices = [matrix([[0 for p in range(size**2)]
                                             for q in range(size**2)])
@@ -57,7 +60,9 @@ class TicTacToeBoard(object):
             m = self._adjacency_matrices[player]**(self._winning_row_length - 1)
             # print(m)
             for i, j in product(range(self._size**2), range(self._size**2)):
-                if (m[i,j] == 1):
+                if (m[i,j] == 1 and abs(j - i) in {self._winning_row_length**2 - 1,
+                                           self._winning_row_length - 1,
+                                           self._winning_row_length**2 - self._winning_row_length}):
                     return player + 1
 
     def clear(self):
@@ -67,8 +72,8 @@ class TicTacToeBoard(object):
                                     for player in range(self._num_players)]
 
 class TicTacToeGame(object):
-    def __init__(self, size):
-        self.board = TicTacToeBoard(size)
+    def __init__(self, size, num_players, winning_row_length):
+        self.board = TicTacToeBoard(size, num_players, winning_row_length)
 
     def start(self):
         board = self.board
@@ -83,7 +88,7 @@ class TicTacToeGame(object):
 
 # internal functions & classes
 def main():
-    game = TicTacToeGame(3)
+    game = TicTacToeGame(board_size, num_players, winning_row_length)
     game.start()
     return 0
 

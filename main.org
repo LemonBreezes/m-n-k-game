@@ -13,6 +13,7 @@ import sys
 <<tictactoe-main-imports>>
 
 # constants
+<<tictactoe-constants>>
 
 # exception classes
 
@@ -39,9 +40,21 @@ if __name__ == '__main__':
 #+name: tictactoe-main
 #+begin_src python
 def main():
-    game = TicTacToeGame(3)
+    game = TicTacToeGame(board_size, num_players, winning_row_length)
     game.start()
     return 0
+#+end_src
+
+* Constants
+:PROPERTIES:
+:CREATED_TIME: [2021-11-08 Mon 19:30]
+:END:
+
+#+name: tictactoe-constants
+#+begin_src python
+board_size = 3
+num_players = 1
+winning_row_length = 3
 #+end_src
 
 * Define the ~TicTacToeGame~ class
@@ -52,8 +65,8 @@ def main():
 #+name: TicTacToeGame-defn
 #+begin_src python
 class TicTacToeGame(object):
-    def __init__(self, size):
-        self.board = TicTacToeBoard(size)
+    def __init__(self, size, num_players, winning_row_length):
+        self.board = TicTacToeBoard(size, num_players, winning_row_length)
 
     def start(self):
         board = self.board
@@ -94,10 +107,10 @@ one for each player and one encoding an empty tile.
 #+name: TicTacToeBoard-defn
 #+begin_src python
 class TicTacToeBoard(object):
-    def __init__(self, size):
+    def __init__(self, size, num_players, winning_row_length):
         self._size = size
-        self._num_players = 1
-        self._winning_row_length = size
+        self._num_players = num_players
+        self._winning_row_length = winning_row_length
         self._board = [[0 for i in range(size)] for j in range(size)]
         self._adjacency_matrices = [matrix([[0 for p in range(size**2)]
                                             for q in range(size**2)])
