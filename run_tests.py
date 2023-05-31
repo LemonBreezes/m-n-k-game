@@ -32,6 +32,8 @@ class TestTicTacToeBoard(unittest.TestCase):
                         [0, 1, 1]]
         self.assertEqual(board.getWinner(), 1)
 
+
+
 def main():
     suite = unittest.TestSuite()
     suite.addTests(
