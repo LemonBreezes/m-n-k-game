@@ -32,8 +32,8 @@ class BoardTests(unittest.TestCase):
         board.add_mark(1,1,1)
         self.assertEqual(board.get_player_with_score(3), 0)
         # board.board = [[1, 2, 1],
-        #                 [2, 1, 2],
-        #                 [2, 1, 2]]
+        #                [2, 1, 2],
+        #                [2, 1, 2]]
         board.add_mark(0,1,2)
         board.add_mark(1,0,2)
         board.add_mark(1,2,2)
@@ -43,8 +43,8 @@ class BoardTests(unittest.TestCase):
         self.assertEqual(board.get_player_with_score(3), -1)
         board = Board(size=3)
         # board.board = [[1, 1, 0],
-        #                 [1, 0, 1],
-        #                 [0, 1, 1]]
+        #                [1, 0, 1],
+        #                [0, 1, 1]]
         board.add_mark(0,0,1)
         board.add_mark(0,1,1)
         board.add_mark(1,0,1)
@@ -53,8 +53,8 @@ class BoardTests(unittest.TestCase):
         board.add_mark(2,2,1)
         self.assertEqual(board.get_player_with_score(3), 0)
         # board.board = [[1, 1, 0],
-        #                 [1, 1, 1],
-        #                 [0, 1, 1]]
+        #                [1, 1, 1],
+        #                [0, 1, 1]]
         board.add_mark(1,1,1)
         self.assertEqual(board.get_player_with_score(3), 1)
 
