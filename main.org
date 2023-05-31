@@ -118,7 +118,7 @@ class TicTacToeGame(object):
 
 #+name: TicTacToeBoard-defn
 #+begin_src python
-class TicTacToeBoard(object):
+class TicTacToeBoard():
     def __init__(self, size, num_players, winning_row_length, board=None, last_player=0):
         self._size = size
         self._num_players = num_players
@@ -142,16 +142,16 @@ class TicTacToeBoard(object):
 
     def getLastPlayer(self):
         return self._last_player
-        
+
     def getBoard(self):
         return self._board
-    
+
     def getSize(self):
         return self._size
 
     def getWinningRowLength(self):
         return self._winning_row_length
-    
+
     def getNumPlayers(self):
         return self._num_players
 
@@ -186,7 +186,7 @@ class TicTacToeBoard(object):
             if self._board[x][y] == 0:
                 return False
         return True
-    
+
     def getSetOfLines(self):
         setOfLines = []
         for player in range(1,self._num_players + 1):
@@ -208,7 +208,7 @@ class TicTacToeBoard(object):
 
     def _getAlignedPoints(self, p, q, player):
         aligned_points = {p, q}
-        curr = q 
+        curr = q
         while (self._isPointInBoard(curr[0] + q[0] - p[0],
                                     curr[1] + q[1] - p[1])
                and self._board[curr[0] + q[0] - p[0]][curr[1] + q[1] - p[1]] == player):
@@ -222,7 +222,14 @@ class TicTacToeBoard(object):
             curr = (curr[0] - q[0] + p[0], curr[1] - q[1] + p[1])
         # print('The aligned points are: ' + str(aligned_points))
         return frozenset(aligned_points)
-            
+
+    def countBlankPoints(self):
+        result = 0
+        for x, y in product(range(self._size), range(self._size)):
+            if self._board[x][y] == 0:
+                result += 1
+        return result
+
 
     def _isPointInBoard(self, x, y):
         return (0 <= x < self._size and 0 <= y < self._size)
@@ -259,7 +266,7 @@ class TicTacToeAI(object):
                 self._board.addMark(x+1,y+1,self._id)
                 break
 
-    def _getPossibleNextStates(self, board, last_player):
+    def _getPossibleNextStatesOld(self, board, last_player):
         next_states = [None for i in range(board.getSize()**2)]
         for x,y in product(range(board.getSize()), range(board.getSize())):
             if board.getBoard()[x][y] == 0:
@@ -268,47 +275,47 @@ class TicTacToeAI(object):
                 next_states[board.hashPoint(x,y)] = temp
                 # print(str(temp.getBoard()) + ' ' + 'x: ' + str(x) + ', y: ' + str(y) + ', board.getBoard()[x][y]: ' + str(board.getBoard()[x][y]))
         return next_states
-    
-    def _getPossibleGameStates(self, board):
-        # Assumes two players only currently
-        winner = board.getWinner()
-        if winner != 0:
-            return winner
-        if board.isDraw():
-            return 0
-        next_states = [None for i in range(board.getSize()**2)]
+
+    def _getPossibleNextStates(self, board, last_player):
+        next_states = []
         for x,y in product(range(board.getSize()), range(board.getSize())):
             if board.getBoard()[x][y] == 0:
                 temp = board.from_board(board)
-                temp.addMark(x+1,y+1,max(board.getLastPlayer() + 1 % (num_players + 1), 1))
-                next_states[board.hashPoint(x,y)] = self._getPossibleGameStates(temp, board.getLastPlayer())
+                temp.addMark(x+1,y+1,max((last_player + 1) % (num_players + 1), 1))
+                next_states.append(temp)
                 # print(str(temp.getBoard()) + ' ' + 'x: ' + str(x) + ', y: ' + str(y) + ', board.getBoard()[x][y]: ' + str(board.getBoard()[x][y]))
         return next_states
 
-    # This scoring function really doesn't work well right now.
-    def _scoreState(self, board):
-        if not board:
-            return -inf
-        next_possible_states = self._getPossibleNextStates(board, board.getLastPlayer())
-        next_possible_winners = [state.getWinner() for state in next_possible_states if state]
-        # print(str(nextPossibleWinners))
-        if any([winner == self._id for winner in next_possible_winners]):
-            return inf
-        if (any([winner != self._id and winner > 0 for winner in next_possible_winners])):
-            return -inf
-        return 0
+    @lru_cache(maxsize=None)
+    def _scoreState(self, board, depth = 0):
+        # only works for 2 players
+        winner = board.getWinner()
+        last_player = board.getLastPlayer()
+        # print('score_state::', 'winner:', str(winner), 'last_player:', str(last_player), board.isDraw(), sep=' ')
+        if winner != 0:
+            return depth + 1 if winner == self._id else -(depth + 1)
+        elif board.isDraw():
+            return 0
+        possible_next_states = self._getPossibleNextStates(board, last_player)
+        # print('_scoreState:', str(possible_next_states), sep=' ')
+        if last_player != self._id:
+            return max([self._scoreState(state, depth = depth + 1) for state in possible_next_states])
+        else:
+            return min([self._scoreState(state, depth = depth + 1) for state in possible_next_states])
 
     def makeOptimalMove(self):
         board = self._board
-        possible_next_states = self._getPossibleNextStates(board, board.getLastPlayer())
-        # print(str([state.getBoard() for state in possibleNextStates if state]))
-        next_state_scores = [self._scoreState(state) for state in possible_next_states]
+        possible_next_states = self._getPossibleNextStatesOld(board, board.getLastPlayer())
+        next_state_scores = [self._scoreState(state) if state else -inf for state in possible_next_states]
+        # print(str(next_state_scores))
         best_move = board.unhashPoint(max(range(len(next_state_scores)),
                                          key=next_state_scores.__getitem__))
-        # print(str(next_state_scores))
         # print('AI ' + str(self._id) + ' marks ' + str(best_move))
         board.addMark(best_move[0] + 1,best_move[1] + 1,self._id)
 #+end_src
+
+#+RESULTS: TicTacToeAI-defn
+: None
 
 * Create ~unittest~ tests
 :PROPERTIES:
@@ -414,4 +421,5 @@ from time import sleep
 from random import randrange
 from math import inf
 from copy import deepcopy
+from functools import lru_cache
 #+end_src
