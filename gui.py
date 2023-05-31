@@ -1,6 +1,4 @@
-"""gui.py file
-
-A GUI class for pygame.
+"""A UI class implementing a GUI for with PyGame.
 
 Note: In this files pylint configured to ignore 'no member' because of C
     implementation of several pygame members like constants MOUSEBUTTONDOWN and
@@ -23,11 +21,12 @@ DRAW: int = -1
 PLAYER_ONE: int = 0
 PLAYER_TWO: int = 1
 BLANK_TILE: int = 2
-TILES: Dict[str, int] = {PLAYER_ONE: 'X', PLAYER_TWO: 'O', BLANK_TILE: ' '}
+TILES: Dict[str, int] = {PLAYER_ONE: "X", PLAYER_TWO: "O", BLANK_TILE: " "}
 
 # Disabling pylint because of partial implementation of pygame in C, which is not
 # recognizable by pylint.
 # pylint: disable=no-member
+
 
 class GUI:
     """UI class for PyGame GUI.
@@ -53,8 +52,7 @@ class GUI:
         """Draws the background and game board onto the game window."""
         self.draw_background()
         for x, y in product(
-            range(0, self.width, BLOCKSIZE),
-            range(0, self.height, BLOCKSIZE)
+            range(0, self.width, BLOCKSIZE), range(0, self.height, BLOCKSIZE)
         ):
             self.draw_rect(x, y)
             tile: int = board[x // BLOCKSIZE][y // BLOCKSIZE]
@@ -77,7 +75,7 @@ class GUI:
         """This function does not currently do anything."""
         pass
 
-    def get_human_player_move(self, board: List[List[int]]) -> None:
+    def get_human_player_move(self, board: List[List[int]]) -> Tuple[int, int]:
         """Waits until the user enters a game move or closes the window."""
         while True:
             for event in pygame.event.get():
@@ -87,8 +85,7 @@ class GUI:
                 elif event.type == MOUSEBUTTONDOWN:
                     x, y = [c // BLOCKSIZE for c in pygame.mouse.get_pos()]
                     if board[x][y] == BLANK_TILE:
-                        return [x, y]
-
+                        return (x, y)
 
     def draw_text(self, x: int, y: int, s: str) -> None:
         """Draws text onto the game window at the given coordinates"""
