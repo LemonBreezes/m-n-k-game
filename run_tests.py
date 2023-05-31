@@ -1,15 +1,18 @@
+# Python module(s)
 import sys
 import unittest
 
+# User module(s)
 from game import *
 
+# Constants
 PLAYER_ONE = 0
 PLAYER_TWO = 1
 BLANK_TILE = 2
 DRAW = -1
 
-
 class gameTests(unittest.TestCase):
+    """Tests for the Game class."""
     def test_undo(self):
         """Tests that undoing restores the game board to its previous state."""
         game = MnkGame(
