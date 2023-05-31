@@ -39,7 +39,6 @@ class AI():
                   if state is not None
                   else (- inf)
                   for state in possible_next_states]
-        print(scores)
         return board.unhash(max(range(len(scores)), key=scores.__getitem__))
 
     def score_state(self, board, prev_player, depth = 0):
