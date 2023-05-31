@@ -61,14 +61,15 @@ class BoardTests(unittest.TestCase):
 
 class AITests(unittest.TestCase):
     def test_minimax(self):
-        game = TicTacToe(size=3,
-                         num_players=0,
-                         num_ai_players=2,
-                         ai_difficulty=2,
-                         winning_row_length=3,
-                         running_tests = True)
-        game.start()
-        self.assertEqual(game.get_winner(), -1)
+        for _ in range(5):
+            game = TicTacToe(size=3,
+                            num_players=0,
+                            num_ai_players=2,
+                            ai_difficulty=2,
+                            winning_row_length=3,
+                            running_tests = True)
+            game.start()
+            self.assertEqual(game.get_winner(), -1)
 
 def main():
     suite = unittest.TestSuite()
