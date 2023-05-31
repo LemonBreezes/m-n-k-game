@@ -243,6 +243,8 @@ class MnkGame:
     def get_optimal_move(self) -> Tuple[int, int]:
         """Returns the optimal move for the current player to make. When multiple
         moves are equal, the move which is closest to the previous move is selected.
+        If no move has previously been done, choose the move which is closest to the
+        center of the game board.
 
         Returns:
             (int, int) A pair of integers representing a game board position."""
