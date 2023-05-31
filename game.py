@@ -312,18 +312,12 @@ class MnkGame:
         result = [MINUS_INF for _ in range(self.num_rows * self.num_columns)]
 
         scores: Dict[int, int] = {}
-        progress: int = 0
         start: float = time()
         for x, y in product(range(self.num_rows), range(self.num_columns)):
             if self.board[x][y] != BLANK_TILE:
                 continue
             self.do_move(x, y)
             result[self.hash_point(x, y)] = self.minimax(scores=scores)
-            progress += 1
-            if time() - start >= 1:
-                self.ui.display_progress(
-                    progress, self.num_rows*self.num_columns - 1
-                )
             self.undo_move()
         return result
 
@@ -344,15 +338,13 @@ class MnkGame:
             scores (dict): A hash table of all the maximizing scores computed up to now.
         Returns:
             (int) The score of the game state as it was when this computation began."""
-        score: int = scores.get(self.zobrist_hash, None)
+        score: Union[int, None] = scores.get(self.zobrist_hash, None)
         if score:
             return score
 
-        outcome: int = self.get_game_outcome()
-        if outcome == DRAW:
-            return 0
-        if outcome in (PLAYER_ONE, PLAYER_TWO):
-            return -1 if is_maximizing else 1
+        outcome: Union[int, None] = self.get_game_outcome()
+        if outcome:
+            return 0 if outcome == DRAW else -1 if is_maximizing else 1
 
         if is_maximizing:
             optimal_score: int = MINUS_INF
@@ -360,11 +352,10 @@ class MnkGame:
                 if self.board[x][y] != BLANK_TILE:
                     continue
                 self.do_move(x, y)
-                score = self.minimax(False, alpha, beta, scores)
-                scores[self.zobrist_hash] = score
+                score = scores[self.zobrist_hash] = self.minimax(False, alpha, beta, scores)
                 self.undo_move()
                 optimal_score = max(optimal_score, score)
-                alpha = max(score, optimal_score)
+                alpha = max(alpha, optimal_score)
                 if beta <= alpha:
                     break
             return optimal_score
@@ -373,11 +364,10 @@ class MnkGame:
             if self.board[x][y] != BLANK_TILE:
                 continue
             self.do_move(x, y)
-            score = self.minimax(True, alpha, beta, scores)
-            scores[self.zobrist_hash] = score
+            score = scores[self.zobrist_hash] = self.minimax(True, alpha, beta, scores)
             self.undo_move()
             optimal_score = min(optimal_score, score)
-            beta = min(score, optimal_score)
+            beta = min(beta, optimal_score)
             if beta <= alpha:
                 break
         return optimal_score
