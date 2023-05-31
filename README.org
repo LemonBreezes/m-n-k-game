@@ -1,6 +1,6 @@
 
 
-* Generalized Tic Tac Toe game
+* Python Tic Tac Toe
 :PROPERTIES:
 :CREATED_TIME: [2021-11-07 Sun 21:44]
 :END:
