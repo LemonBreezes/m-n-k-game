@@ -10,10 +10,9 @@ https://github.com/LemonBreezes/m-n-k-game"""
 import random
 from itertools import product
 from math import sqrt
-from time import time
-from nop import NOP
 from typing import Optional, List, Tuple, Dict
 from time import sleep
+from nop import NOP
 
 # User module(s)
 from gui import GUI
@@ -89,9 +88,9 @@ class MnkGame:
         self.winning_row_length: int = winning_row_length
         self.is_human_playing: int = is_human_playing
 
-        if graphic == True:
+        if graphic is True:
             self.ui = GUI(num_rows, num_columns)
-        elif graphic == False:
+        elif graphic is False:
             self.ui = CLI(num_rows, num_columns)
         else:
             self.ui = NOP()
