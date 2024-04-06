@@ -127,7 +127,7 @@ class MnkGame:
             self.ui.display_board(self.board)
             self.outcome = self.get_game_outcome()
             sleep(0.5)
-            if self.outcome != None:
+            if self.outcome is not None:
                 self.ui.display_outcome(self.outcome)
                 break
 
@@ -278,7 +278,7 @@ class MnkGame:
         bias: int = self.hash_point(x, y)
 
         scores = [
-            1 / (distance(p, bias) + 1) if scores[p] != None else MINUS_INF
+            1 / (distance(p, bias) + 1) if scores[p] is not None else MINUS_INF
             for p in range(len(scores))
         ]
 
@@ -308,7 +308,7 @@ class MnkGame:
             Returns:
                 (int, int, optional) The winning move, if any are found."""
             for x, y in product(range(self.num_rows), range(self.num_columns)):
-                if self.board[x][y] != BLANK_TILE:
+                if self.board[x][y] is not BLANK_TILE:
                     continue
                 self.do_move(x, y, player)
                 score: int = self.scores[player]
@@ -317,11 +317,11 @@ class MnkGame:
                     return x, y
 
         move: Tuple[int, int] = get_winning_move_for_player(self.current_player)
-        if move != None:
+        if move is not None:
             return move
         other_player: int = self.get_other_player()
         move = get_winning_move_for_player(other_player)
-        if move != None:
+        if move is not None:
             return move
 
     def score_possible_moves(self) -> List[int]:
@@ -333,7 +333,7 @@ class MnkGame:
 
         scores: Dict[int, int] = {}
         for x, y in product(range(self.num_rows), range(self.num_columns)):
-            if self.board[x][y] != BLANK_TILE:
+            if self.board[x][y] is not BLANK_TILE:
                 continue
             self.do_move(x, y)
             result[self.hash_point(x, y)] = self.minimax(scores=scores)
@@ -363,13 +363,13 @@ class MnkGame:
             return score
 
         outcome: Optional[int] = self.get_game_outcome()
-        if outcome != None:
+        if outcome is not None:
             return 0 if outcome == DRAW else -1 if is_maximizing else 1
 
         if is_maximizing:
             optimal_score: int = MINUS_INF
             for x, y in product(range(self.num_rows), range(self.num_columns)):
-                if self.board[x][y] != BLANK_TILE:
+                if self.board[x][y] is not BLANK_TILE:
                     continue
                 self.do_move(x, y)
                 score = scores[self.zobrist_hash] = self.minimax(
