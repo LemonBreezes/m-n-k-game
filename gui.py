@@ -9,7 +9,7 @@ import sys
 from time import sleep
 from itertools import product
 import pygame
-from pygame.locals import *
+import pygame.locals
 from typing import Tuple, Dict, List, TypeVar
 
 # Constants
@@ -98,12 +98,14 @@ class GUI:
             player will mark."""
         while True:
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == pygame.locals.QUIT:
                     pygame.quit()
                     sys.exit()
-                elif event.type == MOUSEBUTTONDOWN:
+                elif event.type == pygame.locals.MOUSEBUTTONDOWN:
                     x, y = [c // BLOCKSIZE for c in pygame.mouse.get_pos()]
-                    if board[x][y] == BLANK_TILE:
+                    if x >= 0 and y >= 0 and \
+                       x < self.width // BLOCKSIZE and \
+                       y < self.height // BLOCKSIZE and board[x][y] == BLANK_TILE:
                         return (x, y)
 
     def draw_text(self, x: int, y: int, s: str) -> None:
