@@ -1,6 +1,4 @@
-"""@author: ***REMOVED***
-
-@email: ***REMOVED***
+"""@author: LemonBreezes
 
 game.py file which contains main module of this repositry.
 
